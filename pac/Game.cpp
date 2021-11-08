@@ -4,15 +4,18 @@ void Game::init()
 {
 	p.setArrowKeys("wsad");
 	board.initlayOut();
-	//board.PrintLayout();
 	p.setColor(Color::YELLOW);
 	p.setFigure('@');
 }
+
+
 void Game::run()
 {
+	//pre run
 	char key = 0;
 	int dir;
 	board.Print();
+	//run
 	do {
 		if (_kbhit())
 		{
@@ -21,10 +24,11 @@ void Game::run()
 				p.setDirection(dir);
 
 		}
-		p.move();
+
+			p.move();
 		Sleep(200);
 	} while (key != ESC);
-
+	//post run
 	setTextColor(Color::WHITE);
 	clear_screen();
 }
