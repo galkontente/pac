@@ -28,8 +28,6 @@ char Point::pointBefore(int dir) {
 		cin >> &ch;
 		gotoxy(++x, y);
 		return ch;
-
-
 	}
 }
 
@@ -74,9 +72,6 @@ void Point::move(int dir) {
 		if (x > 79) {
 			x = 1;
 		}
-		break;
-	case 4: // STAND
-		
 		break;
 	}
 

@@ -3,7 +3,6 @@
 #include <cstring>
 #include "Point.h"
 #include "Color.h"
-#include "Board.h"
 class Ghost
 {
 private:
@@ -29,7 +28,6 @@ public:
 	}
 	void move();
 
-	bool canPass(Board b,int dir, int x, int y);
 };
 #endif
 
