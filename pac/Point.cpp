@@ -5,6 +5,34 @@ void Point::draw(char ch) {
 	cout << ch << endl;
 }
 
+char Point::pointBefore(int dir) {
+	char ch;
+	switch (dir) {
+	case 0: // UP
+		gotoxy(x, ++y);
+		cin >> &ch;
+		gotoxy(x, --y);
+		return ch;
+	case 1: // DOWN
+		gotoxy(x, --y);
+		cin >> &ch;
+		gotoxy(x, ++y);
+		return ch;
+	case 2: // LEFT
+		gotoxy(++x, y);
+		cin >> &ch;
+		gotoxy(--x, y);
+		return ch;
+	case 3: // RIGHT
+		gotoxy(--x, y);
+		cin >> &ch;
+		gotoxy(++x, y);
+		return ch;
+	}
+}
+
+
+
 void Point::setPoint(int x_point, int y_point) {
 	this->x = x_point;
 	this->y = y_point;
@@ -46,4 +74,5 @@ void Point::move(int dir) {
 		}
 		break;
 	}
+
 }

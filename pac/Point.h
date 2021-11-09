@@ -14,8 +14,8 @@ public:
 	void setPoint(int x_point, int y_point);
 	int getIsStepable();
 	void draw(char ch);
-	//void move();
 	void move(int direction);
+	char pointBefore(int direction);
 };
 
 #endif

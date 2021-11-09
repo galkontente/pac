@@ -7,9 +7,10 @@ class Ghost
 {
 private:
 	Point body;
-	int direction;//$ we need to set the directions
+	int direction = rand() % 4;
 	Color color;
 	char figure;
+	Board b;
 
 public:
 	void setColor(Color c) {
@@ -18,6 +19,15 @@ public:
 	void setFigure(const char c) {
 		figure = c;
 	}
+	int PickDirection() {
+		int dir = rand() % 4;
+		return dir;
+	}
+	void setDirection(int dir) {
+		direction = dir;
+	}
+	void move();
+
 };
 #endif
 

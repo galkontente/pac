@@ -4,14 +4,13 @@
 #include "io_utils.h"
 #include "Pacman.h"
 #include "Board.h"
+#include"Ghost.h"
 
 class Game {
 	enum { ESC = 27 };
 	int score;
 	Board board;
-	//Ghost ghosts[2];
-	//$ BreadCrumbs class and than make it an array here????????
-
+	Ghost ghosts[2];
 	Pac p;
 public:
 	void init();

@@ -12,7 +12,7 @@ class Pac {
 	Color color;
 	char figure;
 public:
-	void setArrowKeys(const char* keys) { // "wzad"
+	void setArrowKeys(const char* keys) { 
 		arrowKeys[0] = keys[0];
 		arrowKeys[1] = keys[1];
 		arrowKeys[2] = keys[2];
