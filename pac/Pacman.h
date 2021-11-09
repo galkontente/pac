@@ -4,6 +4,7 @@
 #include <cstring>
 #include "Point.h"
 #include "Color.h"
+#include "Board.h"
 
 class Pac {
 	Point body;
@@ -11,7 +12,10 @@ class Pac {
 	char arrowKeys[4];
 	Color color;
 	char figure;
+	//Board b;
+
 public:
+
 	void setArrowKeys(const char* keys) { 
 		arrowKeys[0] = keys[0];
 		arrowKeys[1] = keys[1];
@@ -27,9 +31,15 @@ public:
 	void move();
 	int getDirection(char key);
 	void setDirection(int dir) {
-		direction = dir;
-	}
+		direction = dir;}
+	
+	int getX() {
+		return body.getX();};
 
+	int getY() {
+		return body.getY();};
+
+	bool canPass(Board b, int x, int y);
 };
 
 #endif
