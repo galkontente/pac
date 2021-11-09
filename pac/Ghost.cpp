@@ -2,7 +2,7 @@
 
 void Ghost::move()
 {
-	//body.pointBefore('.');
+	//char pointBefore = body.pointBefore(direction);
 	body.draw(' ');
 	body.move(direction);
 	setTextColor(color);

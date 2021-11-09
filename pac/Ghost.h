@@ -10,7 +10,7 @@ private:
 	int direction = rand() % 4;
 	Color color;
 	char figure;
-	Board b;
+	//Board b;
 
 public:
 	void setColor(Color c) {

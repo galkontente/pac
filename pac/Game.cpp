@@ -32,9 +32,7 @@ void Game::run()
 				p.setDirection(PacmanDir);
 				
 				ghost1Dir = ghosts[0].PickDirection();
-				//ghosts[0].
-				ghosts[0].setDirection(ghost1Dir);
-				if (ghosts[0].b)
+				ghosts[0].setDirection(ghost1Dir);	
 				ghost2Dir = ghosts[1].PickDirection();
 				ghosts[1].setDirection(ghost2Dir);
 			}

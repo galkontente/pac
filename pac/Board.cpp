@@ -20,6 +20,10 @@ void Board::Print(){
 				setTextColor(Color::WHITE);
 				cout << '.';
 			}
+			if (initBoard[i][j] == ' ')
+			{
+				cout << ' ';
+			}
 		}
 
 	cout << endl;
