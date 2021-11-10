@@ -30,6 +30,13 @@ public:
 		direction = dir;
 	}
 
+	Point getPoint() {
+		return body;
+	}
+	int getDir() {
+		return direction;
+	}
+
 };
 
 #endif

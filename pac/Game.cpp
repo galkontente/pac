@@ -30,23 +30,87 @@ void Game::run()
 			if ((PacmanDir = p.getDirection(key)) != -1)
 			{
 				p.setDirection(PacmanDir);
-				
-				ghost1Dir = ghosts[0].PickDirection();
-				ghosts[0].setDirection(ghost1Dir);	
-				ghost2Dir = ghosts[1].PickDirection();
-				ghosts[1].setDirection(ghost2Dir);
+				ghosts[0].setDirection(ghosts[0].PickDirection());
+				ghosts[1].setDirection(ghosts[1].PickDirection());
 			}
 		}
-		
-		ghosts[0].move();
-		ghosts[1].move();
+		if(canMove(ghosts[0].getDir(), ghosts[0].getPoint(),board)){
+			char coorState = currCoorState(ghosts[0].getPoint(), board);
+			ghosts[0].move(coorState);
+		}
+		else {
+			while(!canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board))
+			{
+					ghosts[0].setDirection(ghosts[0].PickDirection());	
+			}
+			char coorState = currCoorState( ghosts[0].getPoint(), board);
+			ghosts[0].move(coorState);
+		}
+		if (canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board)) {
+			char coorState = currCoorState( ghosts[1].getPoint(), board);
+			ghosts[1].move(coorState);
+			
 
-		p.move();
-		p.move();
+		}
+		else {
+			while (!canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board))
+			{
+				ghosts[1].setDirection(ghosts[1].PickDirection());
+			}
+			char coorSaver = currCoorState( ghosts[1].getPoint(), board);
+			ghosts[1].move(coorSaver);
+		}
+		
+		if (canMove(p.getDir(),p.getPoint(), board)) {
+			int x = p.getPoint().getX();
+			int y = p.getPoint().getY();
+			board.setBreadCrumbCoor(y, x, 0);
+			p.move();
+		}
 
 		Sleep(200);
 	} while (key != ESC);
 	//post run
 	setTextColor(Color::WHITE);
 	clear_screen();
+}
+
+bool Game::canMove(int dir, Point coor, Board board) {
+	int x = coor.getX();
+	int y = coor.getY();
+	switch (dir) {
+	case 0: // UP
+		if (y <= 1 || board.getBoardCoor(--y,x)=='#') {
+			return false;
+		}
+		else return true;
+		break;
+	case 1: // DOWN
+		
+		if (y >= 23 || board.getBoardCoor(++y , x) == '#') {
+			return false;
+		}
+		else return true;
+		break;
+	case 2: // LEFT
+		if (x <= 2 || board.getBoardCoor(y, --x) == '#') {
+			return false;
+		}
+		else return true;
+		break;
+	case 3: // RIGHT
+		
+		if (x >= 77 || board.getBoardCoor(y , ++x) == '#') {
+			return false;
+		}
+		else return true;
+		break;
+	}
+}
+
+char Game::currCoorState( Point coor, Board board) {
+	int x = coor.getX();
+	int y = coor.getY();
+
+	return board.getBreadCrumbCoor(y, x) ? '.' : ' ';
 }

@@ -12,16 +12,19 @@ void Board::Print(){
 		for (int j = 0; j < 80; j++) {
 			if (initBoard[i][j] == '#')
 			{
+
 				setTextColor(Color::BLUE);
 				cout << '#';
 			}
 			if (initBoard[i][j] == '.')
 			{
+				setBreadCrumbCoor(i, j, 1);
 				setTextColor(Color::WHITE);
 				cout << '.';
 			}
 			if (initBoard[i][j] == ' ')
 			{
+				setBreadCrumbCoor(i, j, 0);
 				cout << ' ';
 			}
 		}

@@ -50,27 +50,27 @@ int Point::getIsStepable() {
 void Point::move(int dir) {
 	switch (dir) {
 	case 0: // UP
-		--y;
-		if (y < 1) {
-			y = 24;
+		
+		if (y > 1) {
+			--y;
 		}
 		break;
 	case 1: // DOWN
-		++y;
-		if (y > 24) {
-			y = 1;
+		
+		if (y < 24) {
+			++y;
 		}
 		break;
 	case 2: // LEFT
-		--x;
-		if (x < 1) {
-			x = 79;
+		
+		if (x > 1) {
+			--x;
 		}
 		break;
 	case 3: // RIGHT
-		++x;
-		if (x > 79) {
-			x = 1;
+		
+		if (x <79) {
+			++x;
 		}
 		break;
 	}

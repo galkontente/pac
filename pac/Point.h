@@ -16,6 +16,12 @@ public:
 	void draw(char ch);
 	void move(int direction);
 	char pointBefore(int direction);
+	int getX() {
+		return x;
+	}
+	int getY() {
+		return y;
+	}
 };
 
 #endif

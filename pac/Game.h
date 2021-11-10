@@ -13,8 +13,11 @@ class Game {
 	Ghost ghosts[2];
 	Pac p;
 public:
+	bool canMove(int dir, Point coor, Board board);
+	char currCoorState( Point coor, Board board);
 	void init();
 	void run();
+	
 };
 
 #endif

@@ -10,9 +10,21 @@ private:
 	int direction = rand() % 4;
 	Color color;
 	char figure;
-	//Board b;
+	char trail;
 
 public:
+	void setTrail(char new_trail) {
+		trail = new_trail;
+	}
+	char getTrail() {
+		return trail;
+	}
+	Point getPoint() {
+		return body;
+	}
+	int getDir() {
+		return direction;
+	}
 	void setColor(Color c) {
 		color = c;
 	}
@@ -26,7 +38,7 @@ public:
 	void setDirection(int dir) {
 		direction = dir;
 	}
-	void move();
+	void move(char prevCoor);
 
 };
 #endif
