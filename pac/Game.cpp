@@ -1,8 +1,82 @@
 #include "Game.h"
 
+void Game::printMainMenu()
+{
+	cout << "********************************\n";
+	cout << "*      Welcome to Pacman!      *\n";
+	cout << "********************************\n";
+	cout << "(1) Start a new game\n(8) Present instructions and keys\n(9) EXIT\n";
+}
+
+void Game::printInstructions()
+{
+	cout << "The pacman travels on screen and “eats the breadcrumbs”.\n"
+		"Each eaten breadcrumb equals a point to be earned.\n"
+		"Once all breadcrumbs on screen are eaten the game ends and you win!.\n"
+		"In case a ghost eats the pacman,\n"
+		"you loses one “life”.If all “lives” are gone you loose the game\n";
+	cout << "You can move the pacman using the following keys from your keybord:\n"
+		"w or W : up\n"
+		"x or X : down\n"
+		"a or A : left\n"
+		"d or D : right\n"
+		"s or S : stand\n";
+	cout << "press any key to return to the main menu";
+	//if (_kbhit())// $ why dosent it work??
+		char key = _getch();
+		system("CLS");
+		Game::menu();
+
+
+
+}
+
+void Game::menu()
+{
+	Game::printMainMenu();
+	int key;
+	int flag = 0;
+	key = _getch();
+	while (flag == 0)
+	{
+		cin >> key;
+		//key = _getch();
+		if (key == START_GAME)
+		{
+			flag = 1;
+			system("CLS");
+			Game::init();
+			Game::run();
+		}
+		else if (key == INSTRUCTIONS)
+		{
+			flag = 1;
+			system("CLS");
+			Game::printInstructions();
+		}
+		else if (key == EXIT)
+		{
+			system("CLS");
+			flag = 1;
+			
+			cout << "\nThank you and goodbye!\n";
+		}
+		else 
+		{
+			system("CLS");
+			cout << "\nThe numer you pressed is not an option, Please try again:\n";
+			Game::printMainMenu();
+		}
+	}
+	
+
+}
+
+
+
 void Game::init()
 {
-	p.setArrowKeys("wsad");
+	p.setArrowKeys("wxads");
 	board.initlayOut();
 	p.setColor(Color::YELLOW);
 	p.setFigure('@');
@@ -112,6 +186,7 @@ bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
 		if ((y <= 1 && !isPacman) || board.getBoardCoor(--y,x)=='#') {
 			return false;
 		}
+		
 		else return true;
 		break;
 	case 1: // DOWN
@@ -119,6 +194,7 @@ bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
 		if ((y >= 23 && !isPacman) || board.getBoardCoor(++y , x) == '#') {
 			return false;
 		}
+		
 		else return true;
 		break;
 	case 2: // LEFT
@@ -132,6 +208,7 @@ bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
 		if ((x >= 77 && !isPacman) || board.getBoardCoor(y , ++x) == '#') {
 			return false;
 		}
+		
 		else return true;
 		break;
 	}

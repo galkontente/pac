@@ -9,10 +9,17 @@ void Pac::move()
 }
 int Pac::getDirection(char key)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (key == arrowKeys[i])
-			return i;
-	}
+	if (key == 'w' || key == 'W')//up
+		return 0;
+	else if (key == 'x' || key == 'X')//down
+		return 1;
+	else if (key == 'a' || key == 'A')//left
+		return 2;
+	else if (key == 'd' || key == 'D')//right
+		return 3;
+	else if (key == 's' || key == 'S')//right
+		return 4;
+
+	else
 	return -1;
 }
