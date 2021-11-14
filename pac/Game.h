@@ -8,14 +8,20 @@
 
 class Game {
 	enum { ESC = 27 };
-	int score;
+	unsigned int score=0;
+	Point stats;
 	Board board;
 	Ghost ghosts[2];
 	Pac p;
+
 public:
-	bool canMove(int dir, Point coor, Board board);
+	bool canMove(int dir, Point coor, Board board,bool isPacman);
 	char currCoorState( Point coor, Board board);
+	void drawScore() {
+		stats.draw(score);
+	}
 	void init();
+	void addToScore();
 	void run();
 	
 };

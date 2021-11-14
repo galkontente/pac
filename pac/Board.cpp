@@ -8,6 +8,7 @@ void Board::initlayOut() {
 }
 
 void Board::Print(){
+	
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 80; j++) {
 			if (initBoard[i][j] == '#')
@@ -30,5 +31,9 @@ void Board::Print(){
 		}
 
 	cout << endl;
+	}
+	for (int i = 0; i < 81; i++)
+	{
+		cout << initBoard[25][i];
 	}
 }

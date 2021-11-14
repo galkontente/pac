@@ -7,11 +7,18 @@
 
 class Pac {
 	Point body;
-	int direction = 3;
+	int direction;
 	char arrowKeys[4];
 	Color color;
+	int lives = 3;
 	char figure;
 public:
+	void setLives(int newlives) {
+		lives = newlives;
+	}
+	int getLives() {
+		return lives;
+	}
 	void setArrowKeys(const char* keys) { 
 		arrowKeys[0] = keys[0];
 		arrowKeys[1] = keys[1];

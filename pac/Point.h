@@ -8,12 +8,14 @@ using namespace std;
 
 class Point {
 	int x = 1, y = 1;
-	int stepable;
 
 public:
 	void setPoint(int x_point, int y_point);
-	int getIsStepable();
 	void draw(char ch);
+	void drawInt(int n) {
+		gotoxy(x, y);
+		cout << n << endl;
+	}
 	void move(int direction);
 	char pointBefore(int direction);
 	int getX() {
