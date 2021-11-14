@@ -7,16 +7,20 @@
 #include"Ghost.h"
 
 class Game {
-	enum { ESC = 27 };
+	enum { ESC = 27, START_GAME = 1, INSTRUCTIONS = 8, EXIT = 9};
 	int score;
 	Board board;
 	Ghost ghosts[2];
 	Pac p;
 public:
-	bool canMove(int dir, Point coor, Board board);
+	bool canMove(int dir, Point coor, Board board, bool isGhost);
 	char currCoorState( Point coor, Board board);
 	void init();
 	void run();
+	void printMainMenu();//how do i make it const?$
+	void menu();
+	void printInstructions();
+
 	
 };
 

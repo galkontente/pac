@@ -73,6 +73,11 @@ void Point::move(int dir) {
 			++x;
 		}
 		break;
+	case 4://STAND
+		break;
 	}
+
+	
+
 
 }

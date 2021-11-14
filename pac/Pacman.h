@@ -8,7 +8,7 @@
 class Pac {
 	Point body;
 	int direction = 3;
-	char arrowKeys[4];
+	char arrowKeys[5];
 	Color color;
 	char figure;
 public:
@@ -17,6 +17,7 @@ public:
 		arrowKeys[1] = keys[1];
 		arrowKeys[2] = keys[2];
 		arrowKeys[3] = keys[3];
+		arrowKeys[4] = keys[4];
 	}
 	void setColor(Color c) {
 		color = c;
