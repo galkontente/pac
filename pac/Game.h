@@ -11,6 +11,7 @@ class Game {
 	unsigned int score=0;
 	Point stats;
 	Board board;
+	bool isColored = false;
 	Ghost ghosts[2];
 	Pac p;
 
@@ -20,12 +21,13 @@ public:
 	void drawScore() {
 		stats.draw(score);
 	}
-	void init();
+	void init(bool isColored);
 	void addToScore();
 	void run();
 	void printMainMenu();//how do i make it const?$
 	void menu();
 	void printInstructions();
+	bool getIsColored() { return isColored; };
 
 	
 };

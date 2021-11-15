@@ -43,9 +43,25 @@ void Game::menu()
 		//key = _getch();
 		if (key == START_GAME)
 		{
+			char ch;
 			flag = 1;
 			system("CLS");
-			Game::init();
+			cout << "Do you want the game will be colorfull?\nPress Y or y for colorfull game\n"
+				"Press N or n for black and while game";
+			do
+			{
+				(_kbhit());
+				ch = _getch();
+				if (ch == 'Y' || ch == 'y')//$why does it work only with hebrew keyboard???????
+					isColored = true;
+				else if (ch == 'N' || ch == 'n')
+					isColored = false;
+				else
+					cout << ch << "\nThe key you pressed is not an option, Please try again:\n";
+
+			} while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n');
+			system("CLS");
+			Game::init(isColored);
 			Game::run();
 		}
 		else if (key == INSTRUCTIONS)
@@ -58,48 +74,55 @@ void Game::menu()
 		{
 			system("CLS");
 			flag = 1;
-			
+
 			cout << "\nThank you and goodbye!\n";
 		}
-		else 
+		else
 		{
 			system("CLS");
 			cout << "\nThe numer you pressed is not an option, Please try again:\n";
 			Game::printMainMenu();
 		}
 	}
-	
+
 
 }
 
 
 
-void Game::init()
+
+void Game::init(bool isColored)
 {
 	p.setArrowKeys("wxads");
-	board.initlayOut();
-	p.setColor(Color::YELLOW);
 	p.setFigure('@');
-	stats.setPoint(6,25);
-	ghosts[0].setColor(Color::CYAN);
-	ghosts[1].setColor(Color::MAGENTA);
-	ghosts[0].getPoint().setPoint(20,20);
-	ghosts[1].getPoint().setPoint(20, 20);
-
 	ghosts[0].setFigure('&');
+	ghosts[0].getPoint().setPoint(1, 24);
 	ghosts[1].setFigure('&');
 
-}
+	if (isColored == true)
+	{
+		p.setColor(Color::YELLOW);
+		ghosts[0].setColor(Color::CYAN);
+		ghosts[1].setColor(Color::MAGENTA);
+	}
+	else
+	{
+		p.setColor(Color::WHITE);
+		ghosts[0].setColor(Color::WHITE);
+		ghosts[1].setColor(Color::WHITE);
+	}
 
+}
 
 void Game::run()
 {
 	//pre run
 	char key = 0;
 	char hearts;
+	int flag = 0;
 	int PacmanDir, ghost1Dir, ghost2Dir;
 
-	board.Print();
+	board.Print(Game::isColored);
 	//while run
 	do {
 		for (int i = 0; i < 2; i++)
@@ -125,6 +148,21 @@ void Game::run()
 		if (_kbhit())
 		{
 			key = _getch();
+			if (key == ESC) {
+				gotoxy(0, 26);
+				setTextColor(Color::WHITE);
+				cout << "*********************************************\n";
+				cout << "* Game paused, press ESC again to continue. *\n";
+				cout << "*********************************************\n";
+				char escape = 'n';
+				while (escape != ESC) {
+					escape = _getch();
+				}
+				gotoxy(0, 26);
+				cout << "                                             \n";
+				cout << "                                             \n";
+				cout << "                                             \n";
+			}
 			if ((PacmanDir = p.getDirection(key)) != -1)
 			{
 				p.setDirection(PacmanDir);
@@ -172,7 +210,7 @@ void Game::run()
 		}
 	
 		Sleep(200);
-	} while (key != ESC);
+	} while (key != ESC || flag!=1);
 	//post run
 	setTextColor(Color::WHITE);
 	clear_screen();
