@@ -37,7 +37,7 @@ private:
 
 	enum type{WALL,PATH,PATH_BC};
 public:
-	void Print();
+	void Print(bool isColored);
 	void initlayOut();
 	char getBoardCoor(int x, int y) {
 		return initBoard[x][y];

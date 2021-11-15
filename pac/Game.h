@@ -11,16 +11,17 @@ class Game {
 	int score;
 	Board board;
 	Ghost ghosts[2];
+	bool isColored = false;
 	Pac p;
 public:
 	bool canMove(int dir, Point coor, Board board, bool isGhost);
 	char currCoorState( Point coor, Board board);
-	void init();
+	void init(bool isColored);
+	bool getIsColored() { return isColored; };
 	void run();
 	void printMainMenu();//how do i make it const?$
 	void menu();
 	void printInstructions();
-
 	
 };
 

@@ -8,20 +8,21 @@ void Board::initlayOut() {
 }
 
 
-void Board::Print(){
+void Board::Print(bool isColored){
 
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 80; j++) {
 			if (initBoard[i][j] == '#')
 			{
-
-				setTextColor(Color::BLUE);
+				if(isColored == true)
+					setTextColor(Color::BLUE);
 				cout << '#';
 			}
 			if (initBoard[i][j] == '.')
 			{
 				setBreadCrumbCoor(i, j, 1);
-				setTextColor(Color::WHITE);
+				if (isColored == true)
+					setTextColor(Color::WHITE);
 				cout << '.';
 			}
 			if (initBoard[i][j] == ' ')

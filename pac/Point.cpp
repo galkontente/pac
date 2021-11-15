@@ -34,8 +34,8 @@ char Point::pointBefore(int dir) {
 
 
 void Point::setPoint(int x_point, int y_point) {
-	this->x = x_point;
-	this->y = y_point;
+	x = x_point;
+	y = y_point;
 }
 
 //void Point::move() {
