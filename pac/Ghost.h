@@ -22,6 +22,11 @@ public:
 	Point getPoint() {
 		return body;
 	}
+
+	//Point setPoint(Point _body) {
+	//	body = _body;
+	//}
+
 	int getDir() {
 		return direction;
 	}

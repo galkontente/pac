@@ -1,5 +1,18 @@
 #include "Board.h"
 
+int Board::maxScore()
+{
+	int count = 0;
+	for (int i = 0; i < 25; i++) {
+		for (int j = 0; j < 80; j++) {
+			if (initBoard[i][j] == '.')
+				count++;
+		}
+	}
+	return count;
+}
+
+
 void Board::Print(bool isColored) {
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 80; j++) {
@@ -15,6 +28,7 @@ void Board::Print(bool isColored) {
 				if (isColored == true)
 					setTextColor(Color::WHITE);
 				cout << '.';
+				//count++;
 			}
 			if (initBoard[i][j] == ' ')
 			{
