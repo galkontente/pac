@@ -6,6 +6,8 @@
 #include "Board.h"
 #include"Ghost.h"
 
+
+
 class Game {
 	enum { ESC = 27, START_GAME = 1, INSTRUCTIONS = 8, EXIT = 9};
 	unsigned int score=0;
@@ -28,7 +30,6 @@ public:
 	void menu();
 	void printInstructions();
 	bool getIsColored() { return isColored; };
-
 	
 };
 

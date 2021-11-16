@@ -48,7 +48,7 @@ public:
 	bool getBreadCrumbCoor(int x, int y) {
 		return layout[x][y];
 	}
-	//bool isWall(char initBoard);
+	int maxScore();
 
 };
 #endif

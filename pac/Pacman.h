@@ -7,7 +7,7 @@
 
 class Pac {
 	Point body;
-	int direction = 3;
+	int direction = 4;
 	char arrowKeys[5];
 	Color color;
 	int lives = 3;

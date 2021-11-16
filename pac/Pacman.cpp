@@ -6,6 +6,7 @@ void Pac::move()
 	body.move(direction);
 	setTextColor(color);
 	body.draw(figure);
+
 }
 int Pac::getDirection(char key)
 {

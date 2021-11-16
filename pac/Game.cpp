@@ -10,11 +10,11 @@ void Game::printMainMenu()
 
 void Game::printInstructions()
 {
-	cout << "The pacman travels on screen and “eats the breadcrumbs”.\n"
+	cout << "The pacman travels on screen and ?eats the breadcrumbs?.\n"
 		"Each eaten breadcrumb equals a point to be earned.\n"
 		"Once all breadcrumbs on screen are eaten the game ends and you win!.\n"
 		"In case a ghost eats the pacman,\n"
-		"you loses one “life”.If all “lives” are gone you loose the game\n";
+		"you loses one ?life?.If all ?lives? are gone you loose the game\n";
 	cout << "You can move the pacman using the following keys from your keybord:\n"
 		"w or W : up\n"
 		"x or X : down\n"
@@ -26,9 +26,6 @@ void Game::printInstructions()
 		char key = _getch();
 		system("CLS");
 		Game::menu();
-
-
-
 }
 
 void Game::menu()
@@ -123,19 +120,33 @@ void Game::run()
 	char hearts;
 	int flag = 0;
 	int PacmanDir, ghost1Dir, ghost2Dir;
+	bool moveGhost = true;
 
 	board.Print(Game::isColored);
+
+
 	//while run
 	do {
 	for (int i = 0; i < 2; i++)
 		{
-		if (
-			p.getPoint().getX() == ghosts[i].getPoint().getX() &&
-			p.getPoint().getY() == ghosts[i].getPoint().getY()
-			) {
-			p.setLives(p.getLives() - 1);
-			break;
-		}
+			if (
+				p.getPoint().getX() == ghosts[i].getPoint().getX() &&
+				p.getPoint().getY() == ghosts[i].getPoint().getY()
+				)
+					p.setLives(p.getLives() - 1);
+			/*if (p.getLives() == 0)////
+			{
+				system("CLS");
+				setTextColor(Color::WHITE);
+				cout << "*************************\n";
+				cout << "*      GAME OVER!       *\n"
+				cout << "*************************\n";
+				cout << "press any key to return to the main menu\n";
+				//if (_kbhit())// $ why dosent it work??
+				char key = _getch();
+				system("CLS");
+				Game::menu();
+			}*/
 		}
 		if(p.getLives()>0)
 		for (int i = 0; i < p.getLives()*2; i+=2)
@@ -175,33 +186,34 @@ void Game::run()
 				ghosts[1].setDirection(ghosts[1].PickDirection());
 			}
 		}
-
-		if(canMove(ghosts[0].getDir(), ghosts[0].getPoint(),board, false)){
-			char coorState = currCoorState(ghosts[0].getPoint(), board);
-			ghosts[0].move(coorState);
-		}
-		else {
-			while(!canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board, false))
-			{
-					ghosts[0].setDirection(ghosts[0].PickDirection());	
+		if (moveGhost)
+		{
+			if (canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board, false)) {
+				char coorState = currCoorState(ghosts[0].getPoint(), board);
+				ghosts[0].move(coorState);
 			}
-			char coorState = currCoorState( ghosts[0].getPoint(), board);
-			ghosts[0].move(coorState);
-		}
-		if (canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board, false)) {
-			char coorState = currCoorState( ghosts[1].getPoint(), board);
-			ghosts[1].move(coorState);
-			
-
-		}
-		else {
-			while (!canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board,false))
-			{
-				ghosts[1].setDirection(ghosts[1].PickDirection());
+			else {
+				while (!canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board, false))
+				{
+					ghosts[0].setDirection(ghosts[0].PickDirection());
+				}
+				char coorState = currCoorState(ghosts[0].getPoint(), board);
+				ghosts[0].move(coorState);
 			}
-			char coorSaver = currCoorState( ghosts[1].getPoint(), board);
-			ghosts[1].move(coorSaver);
+			if (canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board, false)) {
+				char coorState = currCoorState(ghosts[1].getPoint(), board);
+				ghosts[1].move(coorState);
+			}
+			else {
+				while (!canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board, false))
+				{
+					ghosts[1].setDirection(ghosts[1].PickDirection());
+				}
+				char coorSaver = currCoorState(ghosts[1].getPoint(), board);
+				ghosts[1].move(coorSaver);
+			}
 		}
+		moveGhost = !moveGhost;
 		
 		if (canMove(p.getDir(),p.getPoint(), board,true)) {
 			int x = p.getPoint().getX();
@@ -213,9 +225,25 @@ void Game::run()
 			}
 			
 			p.move();
+			if (score == board.maxScore())
+			{
+				system("CLS");
+				setTextColor(Color::WHITE);
+				cout << "*******************************\n";
+				cout << "*      YOU WON THE GAME!      *\n";
+				cout << "*******************************\n";
+				cout << "press any key to return to the main menu\n";
+				//if (_kbhit())// $ why dosent it work??
+				char key = _getch();
+				system("CLS");
+				Game::menu();
+			}
+
+
+			
 		}
-		
-		Sleep(200);
+	
+		Sleep(400);
 	} while (key != ESC || flag!=1);
 	//post run
 	setTextColor(Color::WHITE);
