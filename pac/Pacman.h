@@ -10,8 +10,15 @@ class Pac {
 	int direction = 3;
 	char arrowKeys[5];
 	Color color;
+	int lives = 3;
 	char figure;
 public:
+	void setLives(int newlives) {
+		lives = newlives;
+	}
+	int getLives() {
+		return lives;
+	}
 	void setArrowKeys(const char* keys) { 
 		arrowKeys[0] = keys[0];
 		arrowKeys[1] = keys[1];

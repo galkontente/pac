@@ -10,11 +10,11 @@ void Game::printMainMenu()
 
 void Game::printInstructions()
 {
-	cout << "The pacman travels on screen and “eats the breadcrumbs”.\n"
+	cout << "The pacman travels on screen and ?eats the breadcrumbs?.\n"
 		"Each eaten breadcrumb equals a point to be earned.\n"
 		"Once all breadcrumbs on screen are eaten the game ends and you win!.\n"
 		"In case a ghost eats the pacman,\n"
-		"you loses one “life”.If all “lives” are gone you loose the game\n";
+		"you loses one ?life?.If all ?lives? are gone you loose the game\n";
 	cout << "You can move the pacman using the following keys from your keybord:\n"
 		"w or W : up\n"
 		"x or X : down\n"
@@ -45,7 +45,7 @@ void Game::menu()
 			system("CLS");
 			cout << "Do you want the game will be colorfull?\nPress Y or y for colorfull game\n"
 				"Press N or n for black and while game";
-			do 
+			do
 			{
 				(_kbhit());
 				ch = _getch();
@@ -54,7 +54,7 @@ void Game::menu()
 				else if (ch == 'N' || ch == 'n')
 					isColored = false;
 				else
-					cout << ch <<"\nThe key you pressed is not an option, Please try again:\n";
+					cout << ch << "\nThe key you pressed is not an option, Please try again:\n";
 
 			} while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n');
 			system("CLS");
@@ -71,29 +71,29 @@ void Game::menu()
 		{
 			system("CLS");
 			flag = 1;
-			
+
 			cout << "\nThank you and goodbye!\n";
 		}
-		else 
+		else
 		{
 			system("CLS");
 			cout << "\nThe numer you pressed is not an option, Please try again:\n";
 			Game::printMainMenu();
 		}
 	}
-	
+
 
 }
+
 
 
 
 void Game::init(bool isColored)
 {
 	p.setArrowKeys("wxads");
-	board.initlayOut();
 	p.setFigure('@');
 	ghosts[0].setFigure('&');
-	ghosts[0].getPoint().setPoint(1,24);
+	ghosts[0].getPoint().setPoint(1, 24);
 	ghosts[1].setFigure('&');
 
 	if (isColored == true)
@@ -108,168 +108,139 @@ void Game::init(bool isColored)
 		ghosts[0].setColor(Color::WHITE);
 		ghosts[1].setColor(Color::WHITE);
 	}
-	
-}
 
+}
 
 void Game::run()
 {
 	//pre run
 	char key = 0;
+	char hearts;
 	int flag = 0;
 	int PacmanDir, ghost1Dir, ghost2Dir;
 
 	board.Print(Game::isColored);
-
 	//while run
-	while (flag == 0)
-	{
-		do {
-			if (_kbhit())
-			{
-				key = _getch();
-				if (key == ESC) {
-					gotoxy(0, 26);
-					setTextColor(Color::WHITE);
-					cout << "*********************************************\n";
-					cout << "* Game paused, press ESC again to continue. *\n";
-					cout << "*********************************************\n";
-					char escape = 'n';
-					while (escape != ESC) {
-						escape = _getch();
-					}
-					gotoxy(0, 26);
-					cout << "                                             \n";
-					cout << "                                             \n";
-					cout << "                                             \n";
-				}
-				if ((PacmanDir = p.getDirection(key)) != -1)
-				{
-					p.setDirection(PacmanDir);
-					ghosts[0].setDirection(ghosts[0].PickDirection());
-					ghosts[1].setDirection(ghosts[1].PickDirection());
-				}
-			}
-			if (canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board, true)) {
-				char coorState = currCoorState(ghosts[0].getPoint(), board);
-				ghosts[0].move(coorState);
-			}
-			else {
-				while (!canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board, true))
-				{
-					ghosts[0].setDirection(ghosts[0].PickDirection());
-				}
-				char coorState = currCoorState(ghosts[0].getPoint(), board);
-				ghosts[0].move(coorState);
-			}
-			if (canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board, true)) {
-				char coorState = currCoorState(ghosts[1].getPoint(), board);
-				ghosts[1].move(coorState);
-
-
-			}
-			else {
-				while (!canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board, true))
-				{
-					ghosts[1].setDirection(ghosts[1].PickDirection());
-				}
-				char coorSaver = currCoorState(ghosts[1].getPoint(), board);
-				ghosts[1].move(coorSaver);
-			}
-
-			if (canMove(p.getDir(), p.getPoint(), board, false)) {
-				int x = p.getPoint().getX();
-				int y = p.getPoint().getY();
-				board.setBreadCrumbCoor(y, x, 0);
-				p.move();
-				//p.move(); NEED TO DO$
-			}
-
-			Sleep(300);
-		} while (key != ESC);
-
-	/*	p.setDirection(4);
-		ghosts[0].setDirection(4);
-		ghosts[1].setDirection(4);*/
+	do {
+		for (int i = 0; i < 2; i++)
+		{
+			if (
+				p.getPoint().getX() == ghosts[i].getPoint().getX() &&
+				p.getPoint().getY() == ghosts[i].getPoint().getY()
+				)
+				p.setLives(p.getLives() + 1);
+		}
 		
+		for (int i = 0; i < p.getLives()*2; i+=2)
+		{
+			stats.setPoint(17 + i, 25);
+			stats.draw('<');
+			stats.setPoint(18+i, 25);
+			
+			stats.draw('3');
+			stats.setPoint(19 + i, 25);
 
-		/*if (_kbhit())
+		}
+		stats.setPoint(6, 25);
+		if (_kbhit())
 		{
 			key = _getch();
-			while (key != ESC)
+			if (key == ESC) {
+				gotoxy(0, 26);
+				setTextColor(Color::WHITE);
+				cout << "*********************************************\n";
+				cout << "* Game paused, press ESC again to continue. *\n";
+				cout << "*********************************************\n";
+				char escape = 'n';
+				while (escape != ESC) {
+					escape = _getch();
+				}
+				gotoxy(0, 26);
+				cout << "                                             \n";
+				cout << "                                             \n";
+				cout << "                                             \n";
+			}
+			if ((PacmanDir = p.getDirection(key)) != -1)
 			{
-				p.setDirection(4);
-				ghosts[0].setDirection(4);
-				ghosts[1].setDirection(4);
-				key = _getch();
+				p.setDirection(PacmanDir);
+				ghosts[0].setDirection(ghosts[0].PickDirection());
+				ghosts[1].setDirection(ghosts[1].PickDirection());
 			}
 		}
-	}
-		
-		p.setDirection(PacmanDir);
-		ghosts[0].setDirection(ghosts[0].PickDirection());
-		ghosts[1].setDirection(ghosts[1].PickDirection());*/
-	}
+		if(canMove(ghosts[0].getDir(), ghosts[0].getPoint(),board, false)){
+			char coorState = currCoorState(ghosts[0].getPoint(), board);
+			ghosts[0].move(coorState);
+		}
+		else {
+			while(!canMove(ghosts[0].getDir(), ghosts[0].getPoint(), board, false))
+			{
+					ghosts[0].setDirection(ghosts[0].PickDirection());	
+			}
+			char coorState = currCoorState( ghosts[0].getPoint(), board);
+			ghosts[0].move(coorState);
+		}
+		if (canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board, false)) {
+			char coorState = currCoorState( ghosts[1].getPoint(), board);
+			ghosts[1].move(coorState);
+			
 
+		}
+		else {
+			while (!canMove(ghosts[1].getDir(), ghosts[1].getPoint(), board,false))
+			{
+				ghosts[1].setDirection(ghosts[1].PickDirection());
+			}
+			char coorSaver = currCoorState( ghosts[1].getPoint(), board);
+			ghosts[1].move(coorSaver);
+		}
+		
+		if (canMove(p.getDir(),p.getPoint(), board,true)) {
+			int x = p.getPoint().getX();
+			int y = p.getPoint().getY();
+			if (board.getBreadCrumbCoor(y, x)) {
+				board.setBreadCrumbCoor(y, x, 0);
+				addToScore();
+				stats.drawInt(score);
+			}
+			
+			p.move();
+		}
+	
+		Sleep(200);
+	} while (key != ESC || flag!=1);
 	//post run
 	setTextColor(Color::WHITE);
 	clear_screen();
 }
 
-
-
-bool Game::canMove(int dir, Point coor, Board board, bool isGhost) {
+bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
 	int x = coor.getX();
 	int y = coor.getY();
 	switch (dir) {
 	case 0: // UP
-		if (isGhost == true)
-		{
-			if (y <= 1 || board.getBoardCoor(--y, x) == '#') {
-				return false;
-			}
-		}
-		else if(board.getBoardCoor(--y,x)=='#')
-		{
+		if ((y <= 1 && !isPacman) || board.getBoardCoor(--y,x)=='#') {
 			return false;
 		}
 		
 		else return true;
 		break;
 	case 1: // DOWN
-		if (isGhost == true)
-		{
-			if (y >= 23 || board.getBoardCoor(++y, x) == '#') {
-				return false;
-			}
-		}
-		else if (board.getBoardCoor(++y , x) == '#') {
+		
+		if ((y >= 23 && !isPacman) || board.getBoardCoor(++y , x) == '#') {
 			return false;
 		}
 		
 		else return true;
 		break;
 	case 2: // LEFT
-		if (isGhost == true)
-		{
-			if (x <= 2 || board.getBoardCoor(y, --x) == '#') {
-				return false;
-			}
-		}
-		else if (board.getBoardCoor(y, --x) == '#') {
+		if ((x <= 2 && !isPacman) || board.getBoardCoor(y, --x) == '#') {
 			return false;
 		}
-		
 		else return true;
 		break;
 	case 3: // RIGHT
-		if (isGhost == true)
-		{
-			if (x >= 77 || board.getBoardCoor(y, ++x) == '#') {
-				return false;
-			}
-		}
-		if (board.getBoardCoor(y , ++x) == '#') {
+		
+		if ((x >= 77 && !isPacman) || board.getBoardCoor(y , ++x) == '#') {
 			return false;
 		}
 		
@@ -283,4 +254,8 @@ char Game::currCoorState( Point coor, Board board) {
 	int y = coor.getY();
 
 	return board.getBreadCrumbCoor(y, x) ? '.' : ' ';
+}
+
+void Game::addToScore() {
+	score = score+1;
 }

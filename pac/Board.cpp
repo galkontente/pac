@@ -1,20 +1,11 @@
 #include "Board.h"
 
-
-
-void Board::initlayOut() {
-
-
-}
-
-
-void Board::Print(bool isColored){
-
+void Board::Print(bool isColored) {
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 80; j++) {
 			if (initBoard[i][j] == '#')
 			{
-				if(isColored == true)
+				if (isColored == true)
 					setTextColor(Color::BLUE);
 				cout << '#';
 			}
@@ -32,6 +23,10 @@ void Board::Print(bool isColored){
 			}
 		}
 
-	cout << endl;
+		cout << endl;
+	}
+	for (int i = 0; i < 81; i++)
+	{
+		cout << initBoard[25][i];
 	}
 }

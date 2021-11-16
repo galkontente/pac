@@ -8,20 +8,28 @@
 
 class Game {
 	enum { ESC = 27, START_GAME = 1, INSTRUCTIONS = 8, EXIT = 9};
-	int score;
+	unsigned int score=0;
+	Point stats;
 	Board board;
+	bool isColored = false;
 	Ghost ghosts[2];
 	bool isColored = false;
 	Pac p;
+
 public:
-	bool canMove(int dir, Point coor, Board board, bool isGhost);
+	bool canMove(int dir, Point coor, Board board,bool isPacman);
 	char currCoorState( Point coor, Board board);
+	void drawScore() {
+		stats.draw(score);
+	}
 	void init(bool isColored);
-	bool getIsColored() { return isColored; };
+	void addToScore();
 	void run();
 	void printMainMenu();//how do i make it const?$
 	void menu();
 	void printInstructions();
+	bool getIsColored() { return isColored; };
+
 	
 };
 
