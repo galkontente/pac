@@ -13,6 +13,7 @@ private:
 	char trail;
 
 public:
+
 	void setTrail(char new_trail) {
 		trail = new_trail;
 	}

@@ -96,8 +96,9 @@ void Game::init(bool isColored)
 	p.setArrowKeys("wxads");
 	p.setFigure('@');
 	ghosts[0].setFigure('&');
-	ghosts[0].getPoint().setPoint(1, 24);
-	ghosts[1].setFigure('&');
+	Point c = ghosts[0].getPoint();
+	c.setPoint(30, 30);
+	ghosts[1].setFigure('v');
 
 	if (isColored == true)
 	{
@@ -137,13 +138,14 @@ void Game::run()
 		for (int i = 0; i < p.getLives()*2; i+=2)
 		{
 			stats.setPoint(17 + i, 25);
-			stats.draw('<');
+			stats.drawInt(ghosts[0].getPoint().getX());
 			stats.setPoint(18+i, 25);
 			
-			stats.draw('3');
+			stats.drawInt(ghosts[0].getPoint().getY());
 			stats.setPoint(19 + i, 25);
 
 		}
+		
 		stats.setPoint(6, 25);
 		if (_kbhit())
 		{
