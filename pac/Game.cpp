@@ -96,9 +96,10 @@ void Game::init(bool isColored)
 	p.setArrowKeys("wxads");
 	p.setFigure('@');
 	ghosts[0].setFigure('&');
-	Point c = ghosts[0].getPoint();
-	c.setPoint(30, 30);
+	ghosts[0].getPointByRef().setPoint(20, 20);
+	
 	ghosts[1].setFigure('v');
+	ghosts[1].getPointByRef().setPoint(10,10);
 
 	if (isColored == true)
 	{
@@ -126,22 +127,24 @@ void Game::run()
 	board.Print(Game::isColored);
 	//while run
 	do {
-		for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 		{
-			if (
-				p.getPoint().getX() == ghosts[i].getPoint().getX() &&
-				p.getPoint().getY() == ghosts[i].getPoint().getY()
-				)
-				p.setLives(p.getLives() + 1);
+		if (
+			p.getPoint().getX() == ghosts[i].getPoint().getX() &&
+			p.getPoint().getY() == ghosts[i].getPoint().getY()
+			) {
+			p.setLives(p.getLives() - 1);
+			break;
 		}
-		
+		}
+		if(p.getLives()>0)
 		for (int i = 0; i < p.getLives()*2; i+=2)
 		{
 			stats.setPoint(17 + i, 25);
-			stats.drawInt(ghosts[0].getPoint().getX());
+			stats.draw('<');
 			stats.setPoint(18+i, 25);
 			
-			stats.drawInt(ghosts[0].getPoint().getY());
+			stats.draw('3');
 			stats.setPoint(19 + i, 25);
 
 		}
@@ -172,6 +175,7 @@ void Game::run()
 				ghosts[1].setDirection(ghosts[1].PickDirection());
 			}
 		}
+
 		if(canMove(ghosts[0].getDir(), ghosts[0].getPoint(),board, false)){
 			char coorState = currCoorState(ghosts[0].getPoint(), board);
 			ghosts[0].move(coorState);
@@ -210,7 +214,7 @@ void Game::run()
 			
 			p.move();
 		}
-	
+		
 		Sleep(200);
 	} while (key != ESC || flag!=1);
 	//post run

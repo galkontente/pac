@@ -23,6 +23,9 @@ public:
 	Point getPoint() {
 		return body;
 	}
+	Point&getPointByRef(){
+		return body;
+	}
 	int getDir() {
 		return direction;
 	}
