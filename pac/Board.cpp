@@ -28,7 +28,6 @@ void Board::Print(bool isColored) {
 				if (isColored == true)
 					setTextColor(Color::WHITE);
 				cout << '.';
-				//count++;
 			}
 			if (initBoard[i][j] == ' ')
 			{
@@ -36,7 +35,6 @@ void Board::Print(bool isColored) {
 				cout << ' ';
 			}
 		}
-
 		cout << endl;
 	}
 	for (int i = 0; i < 81; i++)
