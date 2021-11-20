@@ -33,13 +33,13 @@ private:
 	enum type{WALL,PATH,PATH_BC};
 public:
 	void Print(bool isColored);
-	char getBoardCoor(int x, int y) {
+	char getBoardCoor(int x, int y)const {
 		return initBoard[x][y];
 	}
 	void setBreadCrumbCoor(int x, int y,int curr) {
 		layout[x][y]=curr;
 	}
-	bool getBreadCrumbCoor(int x, int y) {
+	bool getBreadCrumbCoor(int x, int y)const {
 		return layout[x][y];
 	}
 	int maxScore();

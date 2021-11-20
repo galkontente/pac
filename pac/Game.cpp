@@ -1,20 +1,21 @@
 #include "Game.h"
 
-void Game::printMainMenu()
+void Game::printMainMenu()const
 {
     cout << "********************************\n";
     cout << "*      Welcome to Pacman!      *\n";
     cout << "********************************\n";
-    cout << "(1) Start a new game\n(8) Present instructions and keys\n(9) EXIT\n";
+    cout << "(1) Start a new game\n(8) Present instructions and keys\n(9) EXIT\n"; 
+    cout<< endl;
 }
 
-void Game::printInstructions()
+void Game::printInstructions()const
 {
-    cout << "The pacman travels on screen and ?eats the breadcrumbs?.\n"
+    cout << "The pacman travels on screen and eats the breadcrumbs.\n"
         "Each eaten breadcrumb equals a point to be earned.\n"
         "Once all breadcrumbs on screen are eaten the game ends and you win!.\n"
         "In case a ghost eats the pacman,\n"
-        "you loses one ?life?.If all ?lives? are gone you loose the game\n";
+        "you loses one life.If all lives are gone you loose the game\n";
     cout << "You can move the pacman using the following keys from your keybord:\n"
         "w or W : up\n"
         "x or X : down\n"
@@ -22,9 +23,8 @@ void Game::printInstructions()
         "d or D : right\n"
         "s or S : stand\n";
     cout << "press any key to return to the main menu";
-    //if (_kbhit())// $ why dosent it work??
         char key = _getch();
-        system("CLS");
+        clear_screen();
         Game::printMainMenu();
 }
 
@@ -35,7 +35,6 @@ void Game::menu()
     int flag = 0;
     do
     {
-
             key = _getch();
 
         //cin >> key;
@@ -43,14 +42,14 @@ void Game::menu()
         if (key == START_GAME)
         {
             char ch;
-            system("CLS");
+            clear_screen();
             cout << "Do you want the game will be colorfull?\nPress Y or y for colorfull game\n"
                 "Press N or n for black and while game";
             do
             {
                 (_kbhit());
                 ch = _getch();
-                if (ch == 'Y' || ch == 'y')//$why does it work only with hebrew keyboard???????
+                if (ch == 'Y' || ch == 'y')
                     isColored = true;
                 else if (ch == 'N' || ch == 'n')
                     isColored = false;
@@ -58,34 +57,32 @@ void Game::menu()
                     cout << ch << "\nThe key you pressed is not an option, Please try again:\n";
 
             } while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n');
-            system("CLS");
+            clear_screen();
             Game::init(isColored);
             Game::run();
         }
         else if (key == INSTRUCTIONS)
         {
-            system("CLS");
+            clear_screen();
             Game::printInstructions();
 
         }
         else if (key == EXIT)
         {
-            system("CLS");
-            flag = 1;
+            clear_screen();
             cout << "\nThank you and goodbye!\n";
           
         }
         else
         {
             if(key!=0)
-            system("CLS");
+            clear_screen();
 
             Game::printMainMenu();
-            cout << key << endl;
 
             key = 0;
-          /*  system("CLS");
-            cout << "\nThe numer you pressed is not an option, Please try again:\n";*/
+            clear_screen();
+            cout << "\nThe numer you pressed is not an option, Please try again:\n";
         }
        
     } while (!flag);
@@ -103,7 +100,7 @@ void Game::init(bool isColored)
     ghosts[0].setFigure('&');
     ghosts[0].getPointByRef().setPoint(16, 14);
     
-    ghosts[1].setFigure('v');
+    ghosts[1].setFigure('&');
     ghosts[1].getPointByRef().setPoint(2,14);
 
     if (isColored == true)
@@ -125,15 +122,16 @@ void Game::run()
 {
     //pre run
     char key = 0;
-    char hearts;
     int flag = 0;
-    int PacmanDir, ghost1Dir, ghost2Dir;
+    int PacmanDir;
     bool moveGhost = true;
 
     board.Print(Game::isColored);
 
-
+    
     //while run
+    p.move();
+
     do {
     for (int i = 0; i < 2; i++)
         {
@@ -144,16 +142,18 @@ void Game::run()
             ) {
             p.setLives(currLives - 1);
             p.getPointByRef().setPoint(1, 1);
+            p.setDirection(4);
+            p.move();
+
             }
             if (currLives == 0)
             {
-                system("CLS");
+                clear_screen();
                 setTextColor(Color::WHITE);
                 cout << "*************************\n";
                 cout << "*      GAME OVER!       *\n";
                 cout << "*************************\n";
                 cout << "press any key to return to the main menu\n";
-                //if (_kbhit())// $ why dosent it work??
                 char key = _getch();
                 p.setLives(3);
                 flag = 1;
@@ -191,12 +191,18 @@ void Game::run()
             if (key == ESC) {
                 gotoxy(0, 21);
                 setTextColor(Color::WHITE);
-                cout << "*********************************************\n";
-                cout << "* Game paused, press ESC again to continue. *\n";
-                cout << "*********************************************\n";
+                cout << "**********************************************\n";
+                cout << "* Game paused, press ESC/q to continue/quit. *\n";
+                cout << "**********************************************\n";
                 char escape = 'n';
-                while (escape != ESC) {
+                while (escape != ESC && escape != QUIT) {
                     escape = _getch();
+                }
+                if (escape == QUIT) {
+                    p.setLives(3);
+                    p.getPointByRef().setPoint(1, 1);
+                    flag = 1;
+                    break;
                 }
                 gotoxy(0, 21);
                 cout << "                                             \n";
@@ -243,22 +249,18 @@ void Game::run()
             p.move();
             if (score == board.maxScore())
             {
-                system("CLS");
+                clear_screen();
                 setTextColor(Color::WHITE);
                 cout << "*******************************\n";
                 cout << "*      YOU WON THE GAME!      *\n";
                 cout << "*******************************\n";
                 cout << "press any key to return to the main menu\n";
-                //if (_kbhit())// $ why dosent it work??
                 char key = _getch();
-                system("CLS");
+                clear_screen();
                 flag = 1;
                 Game::printMainMenu();
                 break;
             }
-
-
-            
         }
 
         Sleep(100);
@@ -266,7 +268,7 @@ void Game::run()
     //post run
 
     setTextColor(Color::WHITE);
-    system("CLS");
+    clear_screen();
     printMainMenu();
 
 }
@@ -305,6 +307,8 @@ bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
         else return true;
         break;
     }
+    
+    return false;
 }
 
 char Game::currCoorState( Point coor, Board board) {

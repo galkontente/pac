@@ -16,7 +16,7 @@ public:
 	void setLives(int newlives) {
 		lives = newlives;
 	}
-	int getLives() {
+	int getLives()const {
 		return lives;
 	}
 	void setArrowKeys(const char* keys) { 
@@ -38,13 +38,13 @@ public:
 		direction = dir;
 	}
 
-	Point getPoint() {
+	Point getPoint()const {
 		return body;
 	}
 	Point& getPointByRef() {
 		return body;
 	}
-	int getDir() {
+	int getDir()const {
 		return direction;
 	}
 

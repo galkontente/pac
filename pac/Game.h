@@ -9,7 +9,7 @@
 
 
 class Game {
-	enum { ESC = 27, START_GAME = 49, INSTRUCTIONS = 56, EXIT = 57};
+	enum { ESC = 27, START_GAME = 49, INSTRUCTIONS = 56, EXIT = 57, QUIT = 113 };
 	unsigned int score=0;
 	Point stats;
 	Board board;
@@ -26,10 +26,10 @@ public:
 	void init(bool isColored);
 	void addToScore();
 	void run();
-	void printMainMenu();//how do i make it const?$
+	void printMainMenu()const;
 	void menu();
-	void printInstructions();
-	bool getIsColored() { return isColored; };
+	void printInstructions()const;
+	bool getIsColored()const { return isColored; };
 	
 };
 
