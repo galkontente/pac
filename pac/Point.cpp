@@ -36,12 +36,6 @@ void Point::setPoint(int x_point, int y_point) {
 	y = y_point;
 }
 
-//void Point::move() {
-//	int dir = rand() % 4;
-//	move(dir);
-//}
-
-
 
 void Point::move(int dir) {
 	switch (dir) {

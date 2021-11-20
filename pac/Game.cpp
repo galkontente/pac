@@ -37,9 +37,6 @@ void Game::menu()
     do
     {
             key = _getch();
-
-        //cin >> key;
-        //
         if (key == START_GAME)
         {
             char ch;
@@ -104,7 +101,7 @@ void Game::init(bool isColored)
     p.setArrowKeys("wxads");
     p.setFigure('@');
     ghosts[0].setFigure('&');
-    ghosts[0].getPointByRef().setPoint(16, 14);
+    ghosts[0].getPointByRef().setPoint(22, 10);
     
     ghosts[1].setFigure('&');
     ghosts[1].getPointByRef().setPoint(55,5);
@@ -197,9 +194,7 @@ void Game::run()
             if (key == ESC) {
                 gotoxy(0, 21);
                 setTextColor(Color::WHITE);
-                cout << "**********************************************\n";
-                cout << "* Game paused, press ESC/q to continue/quit. *\n";
-                cout << "**********************************************\n";
+                cout << "***** Game paused, press ESC/q to continue/quit. *****\n";
                 cout << endl;
                 char escape = 'n';
                 while (escape != ESC && escape != QUIT) {
@@ -212,9 +207,8 @@ void Game::run()
                     break;
                 }
                 gotoxy(0, 21);
-                cout << "                                                 \n";
-                cout << "                                                 \n";
-                cout << "                                                 \n";
+                //delets the messege:
+                cout << "                                                           \n";
                 cout << endl;
                 
             }
@@ -228,6 +222,7 @@ void Game::run()
         {
             for (int i = 0; i < 2; i++)
             {
+                //sets direction and checks if the ghost can move there (means its not a wall or a tunnel)
                 ghosts[i].setDirection(ghosts[i].chasePacman(p.getPoint()));
                 if (canMove(ghosts[i].getDir(), ghosts[i].getPoint(), board, false)) {
                     char coorState = currCoorState(ghosts[i].getPoint(), board);
@@ -244,8 +239,9 @@ void Game::run()
 
             }
         }
-        moveGhost = !moveGhost;
+        moveGhost = !moveGhost;// to make the pacman move x2 faster than the ghosts
         
+        //checks if the pacman can move there (means its not a wall) and updates the score
         if (canMove(p.getDir(),p.getPoint(), board,true)) {
             int x = p.getPoint().getX();
             int y = p.getPoint().getY();
@@ -303,14 +299,14 @@ bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
         else return true;
         break;
     case 2: // LEFT
-        if ((x <= 2 && !isPacman) || board.getBoardCoor(y, --x) == '#') {
+        if ((x <= 1 && !isPacman) || board.getBoardCoor(y, --x) == '#') {
             return false;
         }
         else return true;
         break;
     case 3: // RIGHT
         
-        if ((x >= 77 && !isPacman) || board.getBoardCoor(y , ++x) == '#') {
+        if ((x >= 78 && !isPacman) || board.getBoardCoor(y , ++x) == '#') {
             return false;
         }
         
