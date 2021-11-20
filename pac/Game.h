@@ -9,7 +9,7 @@
 
 
 class Game {
-	enum { ESC = 27, START_GAME = 49, INSTRUCTIONS = 56, EXIT = 57};
+	enum { ESC = 27, START_GAME = 49, INSTRUCTIONS = 56, EXIT = 57,QUIT=113};
 	unsigned int score=0;
 	Point stats;
 	Board board;

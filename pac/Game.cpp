@@ -191,12 +191,19 @@ void Game::run()
             if (key == ESC) {
                 gotoxy(0, 21);
                 setTextColor(Color::WHITE);
-                cout << "*********************************************\n";
-                cout << "* Game paused, press ESC again to continue. *\n";
-                cout << "*********************************************\n";
+                cout << "**********************************************\n";
+                cout << "* Game paused, press ESC/q to continue/quit. *\n";
+                cout << "**********************************************\n";
                 char escape = 'n';
-                while (escape != ESC) {
+                while (escape != ESC && escape != QUIT) {
                     escape = _getch();
+                }
+                if (escape == QUIT) {
+                    p.setLives(3);
+                    p.getPointByRef().setPoint(1, 1);
+                    flag = 1;
+                    break;
+
                 }
                 gotoxy(0, 21);
                 cout << "                                             \n";
