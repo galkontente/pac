@@ -107,7 +107,7 @@ void Game::init(bool isColored)
     ghosts[0].getPointByRef().setPoint(16, 14);
     
     ghosts[1].setFigure('&');
-    ghosts[1].getPointByRef().setPoint(2,14);
+    ghosts[1].getPointByRef().setPoint(55,5);
 
     if (isColored == true)
     {
