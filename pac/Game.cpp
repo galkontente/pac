@@ -23,6 +23,7 @@ void Game::printInstructions()const
         "d or D : right\n"
         "s or S : stand\n";
     cout << "press any key to return to the main menu";
+    cout << endl;
         char key = _getch();
         clear_screen();
         Game::printMainMenu();
@@ -44,7 +45,8 @@ void Game::menu()
             char ch;
             clear_screen();
             cout << "Do you want the game will be colorfull?\nPress Y or y for colorfull game\n"
-                "Press N or n for black and while game";
+                "Press N or n for black and while game"; 
+            cout << endl;
             do
             {
                 (_kbhit());
@@ -54,7 +56,10 @@ void Game::menu()
                 else if (ch == 'N' || ch == 'n')
                     isColored = false;
                 else
+                {
                     cout << ch << "\nThe key you pressed is not an option, Please try again:\n";
+                    cout << endl;
+                }
 
             } while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n');
             clear_screen();
@@ -83,6 +88,7 @@ void Game::menu()
             key = 0;
             clear_screen();
             cout << "\nThe numer you pressed is not an option, Please try again:\n";
+            cout << endl;
         }
        
     } while (!flag);
@@ -194,6 +200,7 @@ void Game::run()
                 cout << "**********************************************\n";
                 cout << "* Game paused, press ESC/q to continue/quit. *\n";
                 cout << "**********************************************\n";
+                cout << endl;
                 char escape = 'n';
                 while (escape != ESC && escape != QUIT) {
                     escape = _getch();
@@ -205,9 +212,11 @@ void Game::run()
                     break;
                 }
                 gotoxy(0, 21);
-                cout << "                                             \n";
-                cout << "                                             \n";
-                cout << "                                             \n";
+                cout << "                                                 \n";
+                cout << "                                                 \n";
+                cout << "                                                 \n";
+                cout << endl;
+                
             }
             if ((PacmanDir = p.getDirection(key)) != -1)
             {
@@ -255,6 +264,7 @@ void Game::run()
                 cout << "*      YOU WON THE GAME!      *\n";
                 cout << "*******************************\n";
                 cout << "press any key to return to the main menu\n";
+                cout << endl;
                 char key = _getch();
                 clear_screen();
                 flag = 1;
