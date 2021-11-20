@@ -1,5 +1,5 @@
-#ifndef _THESNAKESGAME_H_
-#define _THESNAKESGAME_H_
+#ifndef _THEPACGAME_H_
+#define _THEPACGAME_H_
 
 #include "io_utils.h"
 #include "Pacman.h"
@@ -9,7 +9,7 @@
 
 
 class Game {
-	enum { ESC = 27, START_GAME = 1, INSTRUCTIONS = 8, EXIT = 9};
+	enum { ESC = 27, START_GAME = 49, INSTRUCTIONS = 56, EXIT = 57};
 	unsigned int score=0;
 	Point stats;
 	Board board;

@@ -14,8 +14,8 @@ int Board::maxScore()
 
 
 void Board::Print(bool isColored) {
-	for (int i = 0; i < 25; i++) {
-		for (int j = 0; j < 80; j++) {
+	for (int i = 0; i < 20; i++) {
+		for (int j = 0; j < 81; j++) {
 			if (initBoard[i][j] == '#')
 			{
 				if (isColored == true)
@@ -41,6 +41,6 @@ void Board::Print(bool isColored) {
 	}
 	for (int i = 0; i < 81; i++)
 	{
-		cout << initBoard[25][i];
+		cout << initBoard[19][i];
 	}
 }
