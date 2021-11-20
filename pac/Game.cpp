@@ -293,14 +293,14 @@ bool Game::canMove(int dir, Point coor, Board board, bool isPacman=false) {
         else return true;
         break;
     case 2: // LEFT
-        if ((x <= 2 && !isPacman) || board.getBoardCoor(y, --x) == '#') {
+        if ((x <= 1 && !isPacman) || board.getBoardCoor(y, --x) == '#') {
             return false;
         }
         else return true;
         break;
     case 3: // RIGHT
         
-        if ((x >= 77 && !isPacman) || board.getBoardCoor(y , ++x) == '#') {
+        if ((x >= 78 && !isPacman) || board.getBoardCoor(y , ++x) == '#') {
             return false;
         }
         
