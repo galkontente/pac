@@ -4,14 +4,11 @@
 #include <cstring>
 #include "Point.h"
 #include "Color.h"
+#include "creature.h"
 
-class Pac {
-	Point body;
-	int direction = 4;
+class Pac : public Creature {
 	char arrowKeys[5];
-	Color color;
 	int lives = 3;
-	char figure;
 public:
 	void setLives(int newlives) {
 		lives = newlives;
@@ -26,27 +23,10 @@ public:
 		arrowKeys[3] = keys[3];
 		arrowKeys[4] = keys[4];
 	}
-	void setColor(Color c) {
-		color = c;
-	}
-	void setFigure(const char c) {
-		figure = c;
-	}
+	
 	void move();
-	int getDirection(char key);
-	void setDirection(int dir) {
-		direction = dir;
-	}
-
-	Point getPoint()const {
-		return body;
-	}
-	Point& getPointByRef() {
-		return body;
-	}
-	int getDir()const {
-		return direction;
-	}
+	int getDirection(char key);//to the crature?$
+	
 
 };
 

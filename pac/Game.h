@@ -5,6 +5,7 @@
 #include "Pacman.h"
 #include "Board.h"
 #include"Ghost.h"
+#include "Menu.h"
 
 
 
@@ -16,6 +17,7 @@ class Game {
 	bool isColored = false;
 	Ghost ghosts[2];
 	Pac p;
+	Menu menu;
 
 public:
 	bool canMove(int dir, Point coor, Board board,bool isPacman);
@@ -26,9 +28,9 @@ public:
 	void init(bool isColored);
 	void addToScore();
 	void run();
-	void printMainMenu()const;
+	//void printMainMenu()const;
 	void menu();
-	void printInstructions()const;
+	//void printInstructions()const;
 	bool getIsColored()const { return isColored; };
 	
 };

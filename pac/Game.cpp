@@ -1,48 +1,21 @@
 #include "Game.h"
+#include "Menu.h"
 
-void Game::printMainMenu()const
-{
-    cout << "********************************\n";
-    cout << "*      Welcome to Pacman!      *\n";
-    cout << "********************************\n";
-    cout << "(1) Start a new game\n(8) Present instructions and keys\n(9) EXIT\n"; 
-    cout<< endl;
-}
-
-void Game::printInstructions()const
-{
-    cout << "The pacman travels on screen and eats the breadcrumbs.\n"
-        "Each eaten breadcrumb equals a point to be earned.\n"
-        "Once all breadcrumbs on screen are eaten the game ends and you win!.\n"
-        "In case a ghost eats the pacman,\n"
-        "you loses one life.If all lives are gone you loose the game\n";
-    cout << "You can move the pacman using the following keys from your keybord:\n"
-        "w or W : up\n"
-        "x or X : down\n"
-        "a or A : left\n"
-        "d or D : right\n"
-        "s or S : stand\n";
-    cout << "press any key to return to the main menu";
-    cout << endl;
-        char key = _getch();
-        clear_screen();
-        Game::printMainMenu();
-}
 
 void Game::menu()
 {
-    Game::printMainMenu();
-    int key=0;
+    menu.printMainMenu();
+    int key = 0;
     int flag = 0;
     do
     {
-            key = _getch();
+        key = _getch();
         if (key == START_GAME)
         {
             char ch;
             clear_screen();
             cout << "Do you want the game will be colorfull?\nPress Y or y for colorfull game\n"
-                "Press N or n for black and while game"; 
+                "Press N or n for black and while game";
             cout << endl;
             do
             {
@@ -66,35 +39,32 @@ void Game::menu()
         else if (key == INSTRUCTIONS)
         {
             clear_screen();
-            Game::printInstructions();
+            printInstructions();
 
         }
         else if (key == EXIT)
         {
             clear_screen();
             cout << "\nThank you and goodbye!\n";
-          
+
         }
         else
         {
-            if(key!=0)
-            clear_screen();
+            if (key != 0)
+                clear_screen();
 
-            Game::printMainMenu();
+            printMainMenu();
 
             key = 0;
             clear_screen();
             cout << "\nThe numer you pressed is not an option, Please try again:\n";
             cout << endl;
         }
-       
+
     } while (!flag);
 
     return;
 }
-
-
-
 
 void Game::init(bool isColored)
 {
