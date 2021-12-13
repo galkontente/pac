@@ -37,7 +37,7 @@ void Point::setPoint(int x_point, int y_point) {
 }
 
 
-void Point::move(int dir,int limit[]) {
+void Point::movePoint(int dir,int limit[]) {
 	int upLimit = limit[0];
 	int downLimit = limit[1];
 	int leftLimit = limit[2];

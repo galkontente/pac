@@ -15,11 +15,14 @@ void Ghost::move(char prevCoor, int limits[])
 {
 	setTextColor(Color::WHITE);
 	body.draw(prevCoor);
-	body.move(direction, limits);
-	setTextColor(color);
-	body.draw(figure);
+	body.movePoint(this->getDir(), limits);
+	setTextColor(this->getColor());
+	setFigure(this->getFigure());
+	setTextColor(this->getColor());
+	body.draw(this->getFigure());
 	setTextColor(Color::WHITE);
 }
+
 
 int Ghost:: chasePacman(Point pacman) {
 	int x1 = pacman.getX();

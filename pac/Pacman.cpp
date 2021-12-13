@@ -3,12 +3,15 @@
 void Pac::move(int limits[])
 {
 	body.draw(' ');
-	body.move(direction, limits);
-	setTextColor(color);
-	body.draw(figure);
-
+	body.movePoint(this->getDir(),limits);
+	setFigure(this->getFigure());
+	setTextColor(this->getColor());
+	body.draw(this->getFigure());
 }
-int Pac::getDirection(char key)
+
+
+
+int Pac::getDirectionInput(char key)
 {
 	if (key == 'w' || key == 'W')//up
 		return 0;

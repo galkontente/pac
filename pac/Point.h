@@ -16,7 +16,7 @@ public:
 		gotoxy(x, y);
 		cout << n << endl;
 	}
-	void move(int direction, int limit[]);
+	void movePoint(int direction, int limit[]);
 	char pointBefore(int direction);
 	int getX() {
 		return x;

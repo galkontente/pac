@@ -5,14 +5,11 @@
 
 #include "Color.h"
 #include "Ghost.h"
+#include "Creature.h"
 
-class Pac {
-	Point body;
-	int direction = 4;
+class Pac:public Creature {
 	char arrowKeys[5];
-	Color color;
 	int lives = 3;
-	char figure;
 	int initPostion[2];
 
 public:
@@ -29,9 +26,7 @@ public:
 		arrowKeys[3] = keys[3];
 		arrowKeys[4] = keys[4];
 	}
-	void setColor(Color c) {
-		color = c;
-	}
+	
 	void setInitPostion(int x,int y) {
 		initPostion[0] = x;
 		initPostion[1] = y;
@@ -45,24 +40,10 @@ public:
 		return initPostion[1];
 
 	}
-	void setFigure(const char c) {
-		figure = c;
-	}
-	void move( int limit[]);
-	int getDirection(char key);
-	void setDirection(int dir) {
-		direction = dir;
-	}
 
-	Point getPoint()const {
-		return body;
-	}
-	Point& getPointByRef() {
-		return body;
-	}
-	int getDir()const {
-		return direction;
-	}
+	void move( int limit[]);
+	int getDirectionInput(char key);
+	
 
 };
 

@@ -6,6 +6,7 @@
 #include "Board.h"
 #include"PathFinder.h"
 #include"Menu.h"
+#include"Fruit.h"
 
 #include"Ghost.h"
 
@@ -21,6 +22,7 @@ class Game {
 	PathFinder ghostLogic;
 	Pac p;
 	Menu menu;
+	Fruit fruit;
 
 public:
 	bool canMove(int dir, Point coor, Board board,bool isPacman);

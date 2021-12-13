@@ -9,10 +9,6 @@ class Ghost:public Creature
 {
 private:
 	static int ghostAmount;
-	Point body;
-	int direction = rand() % 4;
-	Color color;
-	char figure;
 	char trail;
 
 public:
@@ -24,30 +20,13 @@ public:
 	char getTrail()const {
 		return trail;
 	}
-	Point getPoint()const {
-		return body;
-	}
-	Point&getPointByRef(){
-		return body;
-	}
-	int getDir() {
-		return direction;
-	}
-	void setColor(Color c) {
-		color = c;
-	}
-	void setFigure(const char c) {
-		figure = c;
-	}
 	int chasePacman(Point pacman);
 	int PickDirection() {
 	
 		int dir = rand() % 4;
 		return dir;
 	}
-	void setDirection(int dir) {
-		direction = dir;
-	}
+
 	void move(char prevCoor, int limits[]);
 
 };

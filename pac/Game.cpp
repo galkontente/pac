@@ -38,14 +38,16 @@ void Game::init(bool isColored)
     board.initBoardFromFile("D:/studying/code/cpp/pacman/pac/pacman_03.screen");
     p.setArrowKeys("wxads");
     p.setFigure('@');
+    char fruitFigure = (char)(rand() % 9 + 5);
+    fruit.setFigure(fruitFigure);
     if (isColored == true)
     {
         p.setColor(Color::YELLOW);
     }
-    else
+ /*   else
     {
         p.setColor(Color::WHITE);
-    }
+    }*/
 
 }
 
@@ -146,7 +148,7 @@ void Game::run()
                 cout << endl;
                 
             }
-            if ((PacmanDir = p.getDirection(key)) != -1)
+            if ((PacmanDir = p.getDirectionInput(key)) != -1)
             {
                 p.setDirection(PacmanDir);
               
