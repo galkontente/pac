@@ -1,9 +1,9 @@
 #include "Pacman.h"
 
-void Pac::move(int limits[])
+void Pac::move()
 {
 	body.draw(' ');
-	body.move(direction, limits);
+	body.move(direction);
 	setTextColor(color);
 	body.draw(figure);
 

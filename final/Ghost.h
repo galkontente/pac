@@ -1,14 +1,11 @@
 #ifndef _GHOST_H_
 #define _GHOST_H_
-
+#include <cstring>
 #include "Point.h"
 #include "Color.h"
-#include "Creature.h"
-
-class Ghost:public Creature
+class Ghost
 {
 private:
-	static int ghostAmount;
 	Point body;
 	int direction = rand() % 4;
 	Color color;
@@ -16,8 +13,7 @@ private:
 	char trail;
 
 public:
-	static int getGhostAmount() { return ghostAmount; }
-	static void addGhost();
+
 	void setTrail(char new_trail) {
 		trail = new_trail;
 	}
@@ -48,7 +44,7 @@ public:
 	void setDirection(int dir) {
 		direction = dir;
 	}
-	void move(char prevCoor, int limits[]);
+	void move(char prevCoor);
 
 };
 #endif

@@ -1,8 +1,8 @@
 #ifndef _POINT_H_
 #define _POINT_H_
 
-#include "io_utils.h"
 #include <iostream>
+#include "io_utils.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ public:
 		gotoxy(x, y);
 		cout << n << endl;
 	}
-	void move(int direction, int limit[]);
+	void move(int direction);
 	char pointBefore(int direction);
 	int getX() {
 		return x;

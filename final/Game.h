@@ -4,9 +4,6 @@
 #include "io_utils.h"
 #include "Pacman.h"
 #include "Board.h"
-#include"PathFinder.h"
-#include"Menu.h"
-
 #include"Ghost.h"
 
 
@@ -17,10 +14,8 @@ class Game {
 	Point stats;
 	Board board;
 	bool isColored = false;
-	Ghost ghosts[4];
-	PathFinder ghostLogic;
+	Ghost ghosts[2];
 	Pac p;
-	Menu menu;
 
 public:
 	bool canMove(int dir, Point coor, Board board,bool isPacman);
@@ -31,11 +26,9 @@ public:
 	void init(bool isColored);
 	void addToScore();
 	void run();
-
-
-	//void printMainMenu()const;
-	void gameFlow();
-	//void printInstructions()const;
+	void printMainMenu()const;
+	void menu();
+	void printInstructions()const;
 	bool getIsColored()const { return isColored; };
 	
 };

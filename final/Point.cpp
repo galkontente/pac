@@ -37,42 +37,38 @@ void Point::setPoint(int x_point, int y_point) {
 }
 
 
-void Point::move(int dir,int limit[]) {
-	int upLimit = limit[0];
-	int downLimit = limit[1];
-	int leftLimit = limit[2];
-	int rightLimit = limit[3];
+void Point::move(int dir) {
 	switch (dir) {
 	case 0: // UP
 		if (y == 1)
 			break;
 		--y;
-		if (y < upLimit) {
-			y = downLimit;
+		if (y < 1) {
+			y = 24;
 		}
 		break;
 	case 1: // DOWN
 		if (y == 80)
 			break;
 		++y;
-		if (y > downLimit) {
-			y = upLimit;
+		if (y > 24) {
+			y = 1;
 		}
 		break;
 	case 2: // LEFT
 		if (x == 0)
 			break;
 		--x;
-		if (x < leftLimit) {
-			x = rightLimit;
+		if (x < 1) {
+			x = 79;
 		}
 		break;
 	case 3: // RIGHT
 		if (x == 80)
 			break;
 		++x;
-		if (x > rightLimit) {
-			x = leftLimit;
+		if (x > 79) {
+			x = 1;
 		}
 		break;
 	case 4://STAND

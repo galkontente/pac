@@ -1,21 +1,10 @@
-#include "Board.h"
-#include "PathFinder.h"
-
 #include "Ghost.h"
 
-int Ghost::ghostAmount = 0;
-
-
- void Ghost::addGhost() {
-	 ghostAmount++;
-}
-
-
-void Ghost::move(char prevCoor, int limits[])
+void Ghost::move(char prevCoor)
 {
 	setTextColor(Color::WHITE);
 	body.draw(prevCoor);
-	body.move(direction, limits);
+	body.move(direction);
 	setTextColor(color);
 	body.draw(figure);
 	setTextColor(Color::WHITE);

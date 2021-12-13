@@ -2,9 +2,8 @@
 #define _PAC_H_
 
 #include <cstring>
-
+#include "Point.h"
 #include "Color.h"
-#include "Ghost.h"
 
 class Pac {
 	Point body;
@@ -13,8 +12,6 @@ class Pac {
 	Color color;
 	int lives = 3;
 	char figure;
-	int initPostion[2];
-
 public:
 	void setLives(int newlives) {
 		lives = newlives;
@@ -32,23 +29,10 @@ public:
 	void setColor(Color c) {
 		color = c;
 	}
-	void setInitPostion(int x,int y) {
-		initPostion[0] = x;
-		initPostion[1] = y;
-
-	}
-	int getInitPostionX() {
-		return initPostion[0];
-
-	}
-	int getInitPostionY() {
-		return initPostion[1];
-
-	}
 	void setFigure(const char c) {
 		figure = c;
 	}
-	void move( int limit[]);
+	void move();
 	int getDirection(char key);
 	void setDirection(int dir) {
 		direction = dir;
