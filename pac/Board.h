@@ -102,6 +102,7 @@ public:
 	char getBoardCoor(int x, int y)const {
 		return initBoard[x][y];
 	}
+
 	int getLifeLegendPost() {
 		return lifeLenged;
 	}
@@ -120,7 +121,7 @@ public:
 	}
 	int maxScore();
 
-	void initBoardFromFile(const char * filePath) {
+	void initBoardFromFile(const string filePath) {
 		ifstream infile;
 		infile.open(filePath);
 		char tmpBoard[20][81];

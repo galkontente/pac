@@ -1,6 +1,7 @@
 #include "Game.h"
+#include <filesystem>
 
-
+using std::filesystem::directory_iterator;
 
 
 
@@ -10,7 +11,7 @@ void Game::gameFlow()
 
     if (key == START_GAME)
     {
-        bool isColored = menu.isColorfull();
+        setIsColored(menu.isColorfull());
         clear_screen();
         Game::init(isColored);
         Game::run();
@@ -35,9 +36,18 @@ void Game::gameFlow()
 
 void Game::init(bool isColored)
 {
-    board.initBoardFromFile("D:/studying/code/cpp/pacman/pac/pacman_03.screen");
+    string path = "../";
+
+    for (const auto& file : directory_iterator(path)) {
+        path = file.path().filename().string();
+         if(file.path().extension().compare(".screen")==0) {
+             boardNames.push_back(file.path().string());
+         }
+    }
     p.setArrowKeys("wxads");
     p.setFigure('@');
+    fruit.getPointByRef().setPoint(9, 9);
+    fruit.setWaitUntill(5);
     char fruitFigure = (char)(rand() % 9 + 5);
     fruit.setFigure(fruitFigure);
     if (isColored == true)
@@ -54,17 +64,22 @@ void Game::init(bool isColored)
 void Game::run()
 {
     //pre run
-    char key = 0;
-    int flag = 0;
+   
     int PacmanDir;
     bool moveGhost = true;
+    for (int i = 0; i < boardNames.size(); i++)
+    {
+        char key = 0;
+        int flag = 0;
+        board.initBoardFromFile(boardNames[i]);
+        board.Print(isColored, ghosts, p.getPointByRef());
+        int limits[4] = { board.getBoardLimit(0),board.getBoardLimit(1),board.getBoardLimit(2),board.getBoardLimit(3) };
+        p.setInitPostion(p.getPoint().getX(), p.getPoint().getY());
 
-    board.Print(isColored, ghosts, p.getPointByRef());
-    int limits[4] = { board.getBoardLimit(0),board.getBoardLimit(1),board.getBoardLimit(2),board.getBoardLimit(3) };
-    p.setInitPostion(p.getPoint().getX(),p.getPoint().getY());
-
-    //while run
-    p.move(limits);
+        //while run
+        p.move(limits);
+    
+   
 
     do {
 
@@ -155,6 +170,44 @@ void Game::run()
             }
         }
 
+        if (fruit.getWaitUntill() > 0) {
+            fruit.setWaitUntill(fruit.getWaitUntill() - 1);
+        }
+        bool flagwalk = true;
+        if (fruit.getWaitUntill() == 0){
+            if (flagwalk) {
+                fruit.setLifeDur(5);
+                flagwalk = false;
+            }
+            fruit.setFigure('0' + (rand() % 5) + 5);
+
+            if (fruit.getLifeDur() > 0) {
+
+
+                if (canMove(fruit.getDir(), fruit.getPoint(), board, false)) {
+
+                    char coorState = currCoorState(fruit.getPoint(), board);
+                    fruit.move(coorState, limits);
+                }
+                else {
+                    while (!canMove(fruit.getDir(), fruit.getPoint(), board, false))
+                    {
+                        fruit.setDirection(fruit.PickDirection());
+                    }
+                    char coorState = currCoorState(fruit.getPoint(), board);
+                    fruit.move(coorState, limits);
+                }
+                int test = fruit.getLifeDur() - 1;
+                fruit.setLifeDur(0);
+            }
+            else {
+                fruit.setWaitUntill(5);
+                flagwalk = true;
+
+            }
+        }
+       
+        
         if (moveGhost && Ghost::getGhostAmount() >0)
         {
             ghostLogic.bfs(p.getPointByRef(), ghosts, board);
@@ -196,7 +249,7 @@ void Game::run()
             }
             
             p.move(limits);
-            if (/*score == board.maxScore()*/ false)
+            if (score == 250)
             {
                 clear_screen();
                 setTextColor(Color::WHITE);
@@ -208,17 +261,19 @@ void Game::run()
                 char key = _getch();
                 clear_screen();
                 flag = 1;
-                Game::gameFlow();
-                break;
+                this->setScore(0);
+
+                continue;
             }
         }
 
         Sleep(100);
     } while (flag!=1);
     //post run
-
+    flag = 0;
     setTextColor(Color::WHITE);
     clear_screen();
+    }
     Game::gameFlow();
 
 }
@@ -270,4 +325,8 @@ char Game::currCoorState( Point coor, Board board) {
 
 void Game::addToScore() {
     score = score+1;
+}
+
+void Game::setScore(int newScore) {
+    score = newScore;
 }

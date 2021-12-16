@@ -19,6 +19,7 @@ class Game {
 	Board board;
 	bool isColored = false;
 	Ghost ghosts[4];
+	vector<string> boardNames;
 	PathFinder ghostLogic;
 	Pac p;
 	Menu menu;
@@ -37,9 +38,11 @@ public:
 
 	//void printMainMenu()const;
 	void gameFlow();
+	void setIsColored(bool res) { isColored = res; };
 	//void printInstructions()const;
 	bool getIsColored()const { return isColored; };
-	
+	void setScore(int newScore);
+
 };
 
 #endif
