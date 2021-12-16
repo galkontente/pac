@@ -13,8 +13,11 @@ public:
 	int printMainMenu()const;
 	int menu();
 	void printInstructions()const;
+	void gameOver()const;
+	void youWon()const;
 	bool isColorfull()const;
 	//setcolorfull??
+
 };
 
 

@@ -120,7 +120,7 @@ public:
 	}
 	int maxScore();
 
-	void initBoardFromFile(const char * filePath) {
+	void initBoardFromFile(const string filePath) {
 		ifstream infile;
 		infile.open(filePath);
 		char tmpBoard[20][81];

@@ -1,13 +1,38 @@
 #include "Menu.h"
 #include "Game.h"
+#include "io_utils.h"
+
+void Menu::gameOver()const {
+    clear_screen();
+    setTextColor(Color::WHITE);
+    cout << "*************************\n";
+    cout << "*      GAME OVER!       *\n";
+    cout << "*************************\n";
+    cout << "press any key to return to the main menu\n";
+    cout << endl;
+    char key = _getch();
+}
+
+void Menu:: youWon()const
+{
+    clear_screen();
+    setTextColor(Color::WHITE);
+    cout << "*******************************\n";
+    cout << "*      YOU WON THE GAME!      *\n";
+    cout << "*******************************\n";
+    cout << "press any key to return to the main menu\n";
+    cout << endl;
+    char key = _getch();
+               
+}
 
 int Menu::printMainMenu()const
 {
     int key = 0;
     int flag = 0;
-    cout << "************\n";
+    cout << "********************************\n";
     cout << "*      Welcome to Pacman!      *\n";
-    cout << "************\n";
+    cout << "********************************\n";
     cout << "(1) Start a new game\n(8) Present instructions and keys\n(9) EXIT\n";
     cout << endl;
     do
