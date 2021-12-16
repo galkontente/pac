@@ -20,7 +20,7 @@ public:
 	char getTrail()const {
 		return trail;
 	}
-	int chasePacman(Point pacman);
+	//int goodGhosts(Point pacman);
 	int PickDirection() {
 	
 		int dir = rand() % 4;

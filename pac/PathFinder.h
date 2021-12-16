@@ -10,6 +10,10 @@ class PathFinder
 private:
 	int trailMap[20][80];
 public:
+    int goodGhosts(Point pacman, Ghost ghost[], int i, int& counter);
+    bool canMove(int dir, Point coor, Board board);
+    char currCoorState(Point coor, Board board);
+    int stupiedGhosts(int i, int& counter, Ghost  ghosts[]);
     void map_to_coordinate(int & cur_x, int & cur_y, int cur_place) {
         cur_x = cur_place / 20;
         cur_y= cur_place % 20;

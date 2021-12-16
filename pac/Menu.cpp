@@ -153,3 +153,45 @@ int Menu::menu()
 
     return key;
 }
+
+
+
+int Menu::gameLevel()
+{
+      clear_screen();
+
+    int key;
+    int flag = 0;
+   
+  
+        do
+        {
+            cout << "The game  have 3 possible levels:\n";
+            cout << "1. BEST\n2.GOOD\n3.NOVICE\n";
+            cout << "Please press the number of the level you want\n";
+            key = _getch();
+            if (key == BEST)
+            {
+                return BEST;
+
+            }
+            else if (key == GOOD)
+            {
+                return GOOD;
+            }
+            else if (key == NOVICE)
+            {
+                return NOVICE;
+
+            }
+            else
+            {
+                clear_screen();
+                cout << "\nThe numer you pressed is not an option, Please try again:\n";
+                cout << endl;
+            }
+
+        } while (!flag);
+
+        return key;
+}

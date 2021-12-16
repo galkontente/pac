@@ -11,10 +11,11 @@ void Game::gameFlow()
 
     if (key == START_GAME)
     {
+        int level =menu.gameLevel();
         setIsColored(menu.isColorfull());
         clear_screen();
         Game::init(isColored);
-        Game::run();
+        Game::run( level);
     }
     else if (key == INSTRUCTIONS)
     {
@@ -34,7 +35,7 @@ void Game::gameFlow()
 
 
 
-void Game::init(bool isColored)
+void Game::init(bool isColored )
 {
     string path = "../";
 
@@ -49,7 +50,7 @@ void Game::init(bool isColored)
     fruit.getPointByRef().setPoint(9, 9);
     fruit.setWaitUntill(5);
     char fruitFigure = (char)(rand() % 9 + 5);
-    fruit.setFigure(fruitFigure);
+    fruit.setFigure('6');
     if (isColored == true)
     {
         p.setColor(Color::YELLOW);
@@ -61,20 +62,40 @@ void Game::init(bool isColored)
 
 }
 
-void Game::run()
+bool Game::doesGhostMeetsFruit(int i)
+{
+    if (fruit.getPoint().getX() == ghosts[i].getPoint().getX() &&
+        fruit.getPoint().getY() == ghosts[i].getPoint().getY())
+        return true;
+    return false;
+}
+
+bool Game::doesPacMeetsFruit()
+{
+    if (fruit.getPoint().getX() == p.getPoint().getX() &&
+        fruit.getPoint().getY() == p.getPoint().getY())
+        return true;
+    else
+        return false;
+}
+
+void Game::run(int level)
 {
     //pre run
-   
+    int counter = 0;
     int PacmanDir;
     bool moveGhost = true;
     for (int i = 0; i < boardNames.size(); i++)
     {
+        bool flagwalk = true;
+
         char key = 0;
         int flag = 0;
         board.initBoardFromFile(boardNames[i]);
         board.Print(isColored, ghosts, p.getPointByRef());
         int limits[4] = { board.getBoardLimit(0),board.getBoardLimit(1),board.getBoardLimit(2),board.getBoardLimit(3) };
         p.setInitPostion(p.getPoint().getX(), p.getPoint().getY());
+        int slowFruit = 0;
 
         //while run
         p.move(limits);
@@ -97,15 +118,25 @@ void Game::run()
                     p.move(limits);
 
                 }
+                if (doesGhostMeetsFruit(i))
+                {
+                    fruit.setWaitUntill((rand() % 50 + 5));
+                    char prevCoorState = currCoorState(fruit.getPoint(), board);
+                    fruit.getPointByRef().draw(prevCoorState);
+                    flagwalk = true;
+                    fruit.setLifeDur(-1);
+
+                }
                 if (currLives == 0)
                 {
-                    clear_screen();
+                    gameOver();
+                    /*clear_screen();
                     setTextColor(Color::WHITE);
                     cout << "*************************\n";
                     cout << "*      GAME OVER!       *\n";
                     cout << "*************************\n";
                     cout << "press any key to return to the main menu\n";
-                    char key = _getch();
+                    char key = _getch();*/
                     p.setLives(3);
                     flag = 1;
                     break;
@@ -173,36 +204,61 @@ void Game::run()
         if (fruit.getWaitUntill() > 0) {
             fruit.setWaitUntill(fruit.getWaitUntill() - 1);
         }
-        bool flagwalk = true;
         if (fruit.getWaitUntill() == 0){
             if (flagwalk) {
-                fruit.setLifeDur(5);
+                fruit.setLifeDur(((rand() % 50 + 15)));
+                fruit.setFigure('0' + (rand() % 5) + 5);
+
                 flagwalk = false;
             }
-            fruit.setFigure('0' + (rand() % 5) + 5);
+           
 
             if (fruit.getLifeDur() > 0) {
 
-
                 if (canMove(fruit.getDir(), fruit.getPoint(), board, false)) {
 
-                    char coorState = currCoorState(fruit.getPoint(), board);
-                    fruit.move(coorState, limits);
+                    if (slowFruit % 3 ==0 )
+                    {
+                        char coorState = currCoorState(fruit.getPoint(), board);
+                        fruit.move(coorState, limits);
+                    }
+                   
+                    slowFruit++;
                 }
                 else {
                     while (!canMove(fruit.getDir(), fruit.getPoint(), board, false))
                     {
                         fruit.setDirection(fruit.PickDirection());
                     }
-                    char coorState = currCoorState(fruit.getPoint(), board);
-                    fruit.move(coorState, limits);
+                    if (slowFruit % 3 == 0)
+                    {
+                        char coorState = currCoorState(fruit.getPoint(), board);
+                        fruit.move(coorState, limits);
+                    }
+                    slowFruit++;
                 }
                 int test = fruit.getLifeDur() - 1;
-                fruit.setLifeDur(0);
+                fruit.setLifeDur(test);
+                if (this->doesPacMeetsFruit())
+                {
+                    int fig = fruit.getFigure()- '0';
+                    addToScore(fig);
+                    stats.drawInt(score);
+                    //char prevCoorState = currCoorState(fruit.getPoint(), board);
+                   // fruit.getPointByRef().draw(prevCoorState);
+                    fruit.setLifeDur(-1);
+                    flagwalk = true;
+
+                    fruit.setWaitUntill((rand() % 50 + 5));
+
+                }
             }
             else {
-                fruit.setWaitUntill(5);
+                fruit.setWaitUntill((rand() % 50 + 5));
+                char prevCoorState = currCoorState(fruit.getPoint(), board);
+                fruit.getPointByRef().draw(prevCoorState);
                 flagwalk = true;
+                
 
             }
         }
@@ -210,16 +266,34 @@ void Game::run()
         
         if (moveGhost && Ghost::getGhostAmount() >0)
         {
-            ghostLogic.bfs(p.getPointByRef(), ghosts, board);
+            if(level == BEST)
+                ghostLogic.bfs(p.getPointByRef(), ghosts, board);
 
                 for (int i = 0; i < Ghost::getGhostAmount(); i++)
                 {
+                    int bestOption;
                     //sets direction and checks if the ghost can move there (means its not a wall or a tunnel)
-                    int bestOption = ghostLogic.findBestDir(ghosts[i].getPoint(), board);
+                    if (level == BEST) {
+                        bestOption = ghostLogic.findBestDir(ghosts[i].getPoint(), board);
+
+                    }
+                    else if(level == GOOD){
+                    if (15 < counter && counter < 20)
+                    {
+                        int stam =ghostLogic.goodGhosts(p.getPoint(), ghosts, i, counter);
+                        int bestOption = ghosts[i].getDir();
+                    }
+                    else
+                        bestOption = ghostLogic.goodGhosts(p.getPoint(), ghosts, i, counter);
+                    }
+                    else if (level == NOVICE) {
+                        bestOption = ghostLogic.stupiedGhosts(i, counter, ghosts);
+                    }
+
                     ghosts[i].setDirection(bestOption);
                     char coorState = currCoorState(ghosts[i].getPoint(), board);
-                    ghosts[i].move(coorState, limits);
-                    /* if (canMove(ghosts[i].getDir(), ghosts[i].getPoint(), board, false)) {
+                    
+                    if (canMove(ghosts[i].getDir(), ghosts[i].getPoint(), board, false)) {
                          char coorState = currCoorState(ghosts[i].getPoint(), board);
                          ghosts[i].move(coorState, limits);
                      }
@@ -232,7 +306,7 @@ void Game::run()
                          }
                          char coorState = currCoorState(ghosts[i].getPoint(), board);
                          ghosts[i].move(coorState,limits);
-                     }*/
+                     }
 
             }
         }
@@ -242,16 +316,19 @@ void Game::run()
         if (canMove(p.getDir(),p.getPoint(), board,true)) {
             int x = p.getPoint().getX();
             int y = p.getPoint().getY();
-            if (board.getBreadCrumbCoor(y, x)) {
+            if (board.getBreadCrumbCoor(y, x)) 
+            {
                 board.setBreadCrumbCoor(y, x, 0);
-                addToScore();
+                addToScore(1);
                 stats.drawInt(score);
             }
             
+            
             p.move(limits);
-            if (score == 250)
+            if (score == 2500)
             {
-                clear_screen();
+                youWon();
+               /* clear_screen();
                 setTextColor(Color::WHITE);
                 cout << "*******************************\n";
                 cout << "*      YOU WON THE GAME!      *\n";
@@ -259,7 +336,7 @@ void Game::run()
                 cout << "press any key to return to the main menu\n";
                 cout << endl;
                 char key = _getch();
-                clear_screen();
+                clear_screen();*/
                 flag = 1;
                 this->setScore(0);
 
@@ -323,10 +400,38 @@ char Game::currCoorState(Point coor, Board board) {
     return board.getBreadCrumbCoor(y, x) ? '.' : ' ';
 }
 
-void Game::addToScore() {
-    score = score+1;
+void Game::addToScore(int i) {
+    score = score+ i;
 }
 
 void Game::setScore(int newScore) {
     score = newScore;
 }
+
+
+void Game::youWon()const
+{
+    clear_screen();
+    setTextColor(Color::WHITE);
+    cout << "*******************************\n";
+    cout << "*      YOU WON THE GAME!      *\n";
+    cout << "*******************************\n";
+    cout << "press any key to return to the main menu\n";
+    cout << endl;
+    char key = _getch();
+    clear_screen();
+}
+
+
+void Game::gameOver()const
+{
+    clear_screen();
+    setTextColor(Color::WHITE);
+    cout << "*************************\n";
+    cout << "*      GAME OVER!       *\n";
+    cout << "*************************\n";
+    cout << "press any key to return to the main menu\n";
+    char key = _getch();
+
+}
+
