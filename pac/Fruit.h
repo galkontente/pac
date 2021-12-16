@@ -37,6 +37,6 @@ public:
 		return dir;
 	}
 
-	void move(char prevCoor, int limits[]);
+	void move(char prevCoor,int limits[]);
 };
 #endif

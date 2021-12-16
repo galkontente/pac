@@ -24,12 +24,21 @@ public:
 
         int x = target.getX();
         int y = target.getY();
+
         int min=0;
         int dx[] = { 0, 0, -1, 1 };
         int dy[] = { -1,1, 0, 0 };
+        //find first legal dir
         for (int i = 0; i < 4; i++)
         {
-        
+            if (board.getBoardCoor(y + dy[i], x + dx[i]) != '#') {
+                min = i;
+                break;
+            }
+        }
+        for (int i = 0; i < 4; i++)
+        {
+         
             if (x + dx[i] >= limits[2] && x + dx[i] <= limits[3] && y + dy[i] <= limits[1] && y + dy[i] >= limits[0] && board.getBoardCoor(y + dy[i], x + dx[i]) != '#') {
                 if (trailMap[y + dy[min]][x + dx[min]] == trailMap[y + dy[i]][x + dx[i]]) {
                     int ra = rand() % 2;
@@ -47,10 +56,15 @@ public:
 
 	void bfs(Point target, Ghost* ghosts,Board board) {
         int limits[4] = { board.getBoardLimit(0),board.getBoardLimit(1),board.getBoardLimit(2),board.getBoardLimit(3) };
-
+        int ghostsLocations[4];
         int ghostAmount = Ghost::getGhostAmount();
+        
         int dx[] = { 0, 1, 0, -1 };
         int dy[] = { 1, 0, -1, 0 };
+        for (int i = 0; i < ghostAmount; i++)
+        {
+            ghostsLocations[i] = map_to_number(ghosts[i].getPointByRef().getX(), ghosts[i].getPointByRef().getY());
+        }
         int foundGhost = 0;
             std::queue<int> queue;
 
@@ -88,12 +102,22 @@ public:
                     continue;*/
                 int cur_distance = trailMap[cur_y][cur_x];
                 for (int i = 0; i < 4; i++) {
-                    if (trailMap[cur_y + dy[i]][cur_x + dx[i]] ==4700 && cur_x + dx[i] >= limits[2] && cur_x + dx[i] <= limits[3] && cur_y + dy[i] <= limits[1] && cur_y + dy[i] >= limits[0] && board.getBoardCoor(cur_y ,cur_x )!='#') {
+                    bool ghostConfilt = false;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        int ghostX= ghosts[j].getPointByRef().getX();
+                        int ghostY = ghosts[j].getPointByRef().getY();
+                        if (ghostY == cur_y + dy[i] && ghostX == cur_x + dx[i]) {
+                            ghostConfilt = true;
+                        }
+
+                    }
+                    if (!ghostConfilt && trailMap[cur_y + dy[i]][cur_x + dx[i]] ==4700 && cur_x + dx[i] >= limits[2] && cur_x + dx[i] <= limits[3] && cur_y + dy[i] <= limits[1] && cur_y + dy[i] >= limits[0] && board.getBoardCoor(cur_y ,cur_x )!='#' ) {
                         queue.push(map_to_number(cur_y + dy[i], cur_x + dx[i]));
 
                      
                       trailMap[cur_y + dy[i]][cur_x + dx[i]] = cur_distance + 1;
-                       /*target.setPoint(cur_x, cur_y);
+                    /*   target.setPoint(cur_x, cur_y);
                         if (board.getBoardCoor(cur_y, cur_x) != '&' && board.getBoardCoor(cur_y, cur_x) != '@')
                             target.drawInt(trailMap[cur_y ][cur_x ]>9? 9: trailMap[cur_y][cur_x]);*/
                     }

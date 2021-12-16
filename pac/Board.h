@@ -102,6 +102,7 @@ public:
 	char getBoardCoor(int x, int y)const {
 		return initBoard[x][y];
 	}
+
 	int getLifeLegendPost() {
 		return lifeLenged;
 	}
