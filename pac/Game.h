@@ -1,5 +1,5 @@
-#ifndef _THEPACGAME_H_
-#define _THEPACGAME_H_
+#ifndef THEPACGAME_H
+#define THEPACGAME_H
 
 #include "io_utils.h"
 #include "Pacman.h"
@@ -46,10 +46,8 @@ public:
 	void setLevel(int newLevel){
 		level = newLevel;
 	}
-	//void printMainMenu()const;
 	void gameFlow();
 	void setIsColored(bool res) { isColored = res; };
-	//void printInstructions()const;
 	bool getIsColored()const { return isColored; };
 	void setScore(int newScore);
 	bool doesGhostMeetsFruit(int i);

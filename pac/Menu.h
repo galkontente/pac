@@ -20,19 +20,10 @@ public:
 	int menu();
 	string askBoardFile(vector<string>  boardNames);
 
-	bool exists(vector<string>  words, int count, const string check)
-	{
-
-		for (const auto& file : words)
-		{
-			if (file.compare(check)==0)
-				return true;
-		}
-
-		return false;
-	}
-
+	bool exists(vector<string>  words, int count, const string check);
 	void printInstructions()const;
+	void gameOver()const;
+	void youWon()const;
 	bool isColorfull()const;
 	int gameLevel();
 
