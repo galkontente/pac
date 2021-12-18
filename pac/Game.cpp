@@ -219,13 +219,14 @@ void Game::run()
             fruit.setWaitUntill(fruit.getWaitUntill() - 1);
         }
         if (fruit.getWaitUntill() == 0) {
+            
             if (flagwalk) {
-                int fruitRow = rand() % (limits[1] - limits[0] + 1) + limits[0]-1;
-                int fruitCol = rand() % (limits[3] - limits[2] + 1) + limits[2]-1;
-                while(board.getBoardCoor(fruitCol, fruitRow)=='#') {
-                 fruitRow= rand() %(limits[1] - limits[0] + 1) + limits[0]-1;
-                fruitCol = rand() % (limits[3] - limits[2] + 1) + limits[2]-1;
-                }
+                int fruitRow, fruitCol;
+                do{
+                 fruitRow = rand() % (limits[1] - limits[0] + 1) + limits[0] - 1;
+                 fruitCol = rand() % (limits[3] - limits[2] + 1) + limits[2] - 1;
+                }while (board.getBoardCoor(fruitRow, fruitCol) == '#');
+               
                 fruit.getPointByRef().setPoint(fruitCol, fruitRow);
                 fruit.setLifeDur(((rand() % 50 + 15)));
                 fruit.setFigure('0' + (rand() % 5) + 5);
