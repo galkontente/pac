@@ -13,6 +13,8 @@ private:
 
 public:
 	static int getGhostAmount() { return ghostAmount; }
+	static void resetGhostAmount() { ghostAmount = 0;; }
+
 	static void addGhost();
 	void setTrail(char new_trail) {
 		trail = new_trail;

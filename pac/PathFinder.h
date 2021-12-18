@@ -127,5 +127,9 @@ public:
             // now grid is filled, so now you should find out for each ghost how to move
         
 	}
+    int goodGhosts(Point pacman, Ghost ghost[], int i, int& counter);
+    bool canMove(int dir, Point coor, Board board);
+    char currCoorState(Point coor, Board board);
+    int stupiedGhosts(int i, int& counter, Ghost  ghosts[]);
 };
 
