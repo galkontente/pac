@@ -1,9 +1,21 @@
 #include "Menu.h"
 #include <filesystem>
 
+bool Menu::exists(vector<string>  words, int count, const string check)
+{
+
+    for (const auto& file : words)
+    {
+        if (file.compare(check) == 0)
+            return true;
+    }
+
+    return false;
+}
+
 void Menu::gameOver()const {
     clear_screen();
-    setTextColor(Color::WHITE);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << "*************************\n";
     cout << "*      GAME OVER!       *\n";
     cout << "*************************\n";
@@ -15,7 +27,7 @@ void Menu::gameOver()const {
 void Menu:: youWon()const
 {
     clear_screen();
-    setTextColor(Color::WHITE);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << "*******************************\n";
     cout << "*      YOU WON THE GAME!      *\n";
     cout << "*******************************\n";
@@ -27,11 +39,12 @@ void Menu:: youWon()const
 
 int Menu::printMainMenu()const
 {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     int key = 0;
     int flag = 0;
     cout << "********************************\n";
     cout << "*      Welcome to Pacman!      *\n";
-    cout << "************\n";
+    cout << "********************************\n";
     cout << "(1) Start a new game\n(4) choose and play a board\n(8) Present instructions and keys\n(9) EXIT\n";
     cout << endl;
     do
@@ -75,6 +88,7 @@ int Menu::printMainMenu()const
 
 void Menu::printInstructions()const
 {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << "The pacman travels on screen and eats the breadcrumbs.\n"
         "Each eaten breadcrumb equals a point to be earned.\n"
         "Once all breadcrumbs on screen are eaten the game ends and you win!.\n"
@@ -95,6 +109,7 @@ void Menu::printInstructions()const
 
 bool Menu::isColorfull()const
 {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     char ch;
     clear_screen();
     cout << "Do you want the game will be colorfull?\nPress Y or y for colorfull game\n"
@@ -184,6 +199,7 @@ string Menu::askBoardFile(vector<string>  boardNames) {
 int Menu::gameLevel()
 {
     clear_screen();
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 
     int key;
     int flag = 0;
@@ -192,7 +208,7 @@ int Menu::gameLevel()
     do
     {
         cout << "The game  have 3 possible levels:\n";
-        cout << "1. BEST\n2.GOOD\n3.NOVICE\n";
+        cout << "1. BEST\n2. GOOD\n3. NOVICE\n";
         cout << "Please press the number of the level you want\n";
         key = _getch();
         if (key == BEST)

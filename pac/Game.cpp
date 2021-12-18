@@ -9,7 +9,7 @@ void Game::gameFlow()
     int key = menu.printMainMenu();
     if (key == START_GAME)
     { 
-  this->setLevel( menu.gameLevel());
+        this->setLevel( menu.gameLevel());
         setIsColored(menu.isColorfull());
         clear_screen();
         Game::init(isColored,true);
@@ -71,10 +71,11 @@ void Game::init(bool isColored,bool readFiles)
     {
         p.setColor(Color::YELLOW);
     }
-    /*   else
-       {
-           p.setColor(Color::WHITE);
-       }*/
+    else
+    {
+        p.setColor(Color::WHITE);
+    }
+
 
 }
 
@@ -142,13 +143,7 @@ void Game::run()
             }
             if (currLives == 0)
             {
-                clear_screen();
-                setTextColor(Color::WHITE);
-                cout << "*************************\n";
-                cout << "*      GAME OVER!       *\n";
-                cout << "*************************\n";
-                cout << "press any key to return to the main menu\n";
-                char key = _getch();
+                menu.gameOver();
                 p.setLives(3);
                 flag = 1;
                 killGameFlag = true;
@@ -189,7 +184,7 @@ void Game::run()
             if (key == ESC) {
                 gotoxy(0, 21);
                 setTextColor(Color::WHITE);
-                cout<< Ghost::getGhostAmount() << "***** Game paused, press ESC/q to continue/quit. *****\n";
+                cout<<  "***** Game paused, press ESC/q to continue/quit. *****\n";
                 cout << endl;
                 char escape = 'n';
                 while (escape != ESC && escape != QUIT) {
@@ -200,6 +195,7 @@ void Game::run()
                     p.getPointByRef().setPoint(1, 1);
                     flag = 1;
                     killGameFlag = true;
+  
                    
                     break;
                 }
@@ -251,7 +247,7 @@ void Game::run()
                     {
                         fruit.setDirection(fruit.PickDirection());
                     }
-                    if (slowFruit % 3 == 0)
+                    if (slowFruit % 3 == 0)//so the fruit will move slow
                     {
                         char coorState = currCoorState(fruit.getPoint(), board);
                         fruit.move(coorState, limits);
@@ -265,8 +261,6 @@ void Game::run()
                     int fig = fruit.getFigure() - '0';
                     setScore((int)fig+score);
                     stats.drawInt(score);
-                    //char prevCoorState = currCoorState(fruit.getPoint(), board);
-                   // fruit.getPointByRef().draw(prevCoorState);
                     fruit.setLifeDur(-1);
                     flagwalk = true;
 
@@ -345,14 +339,7 @@ void Game::run()
             p.move(limits);
             if (board.checkIfBoardCompleted())
             {
-                clear_screen();
-                setTextColor(Color::WHITE);
-                cout << "*******************************\n";
-                cout << "*      YOU WON THE GAME!      *\n";
-                cout << "*******************************\n";
-                cout << "press any key to return to the main menu\n";
-                cout << endl;
-                char key = _getch();
+                menu.youWon();
                 clear_screen();
                 flag = 1;
                 this->setScore(0);
