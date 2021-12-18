@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "Game.h"
+#include <filesystem>
 
 int Menu::printMainMenu()const
 {
@@ -8,15 +8,19 @@ int Menu::printMainMenu()const
     cout << "************\n";
     cout << "*      Welcome to Pacman!      *\n";
     cout << "************\n";
-    cout << "(1) Start a new game\n(8) Present instructions and keys\n(9) EXIT\n";
+    cout << "(1) Start a new game\n(4) choose and play a board\n(8) Present instructions and keys\n(9) EXIT\n";
     cout << endl;
     do
     {
+           
         key = _getch();
         if (key == START_GAME)
         {
             return START_GAME;
 
+        }
+        else if (key == PICKBOARD) {
+            return PICKBOARD;
         }
         else if (key == INSTRUCTIONS)
         {
@@ -29,12 +33,14 @@ int Menu::printMainMenu()const
         }
         else
         {
+
             if (key != 0)
                 clear_screen();
 
-            Menu::printMainMenu();
+            //Menu::printMainMenu();
 
             key = 0;
+
             clear_screen();
             cout << "\nThe numer you pressed is not an option, Please try again:\n";
             cout << endl;
@@ -119,6 +125,68 @@ int Menu::menu()
             Menu::printMainMenu();
 
             key = 0;
+            clear_screen();
+            cout << "\nThe numer you pressed is not an option, Please try again:\n";
+            cout << endl;
+        }
+
+    } while (!flag);
+
+    return key;
+}
+
+string Menu::askBoardFile(vector<string>  boardNames) {
+    string fileName;
+    for (const auto& file : std::filesystem::directory_iterator("../")) {
+        if (file.path().extension().compare(".screen") == 0) {
+            boardNames.push_back(file.path().string());
+
+            cout << file.path().filename().string() << endl;
+        }
+    }
+    cout << "enter the board file name please :)\n";
+    cin >> fileName;
+   
+    while(this->exists(boardNames, boardNames.size(),fileName)==false)
+    {
+        cout << "try again\n";
+
+        cin >> fileName;
+    }
+    return  fileName;
+    
+};
+
+int Menu::gameLevel()
+{
+    clear_screen();
+
+    int key;
+    int flag = 0;
+
+
+    do
+    {
+        cout << "The game  have 3 possible levels:\n";
+        cout << "1. BEST\n2.GOOD\n3.NOVICE\n";
+        cout << "Please press the number of the level you want\n";
+        key = _getch();
+        if (key == BEST)
+        {
+            return BEST;
+
+        }
+        else if (key == GOOD)
+        {
+            return GOOD;
+        }
+        else if (key == NOVICE)
+        {
+            return NOVICE;
+
+        }
+        else
+        {
             clear_screen();
             cout << "\nThe numer you pressed is not an option, Please try again:\n";
             cout << endl;
