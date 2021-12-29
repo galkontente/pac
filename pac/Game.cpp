@@ -6,7 +6,10 @@ using std::filesystem::directory_iterator;
 
 void Game::gameFlow()
 {
-    int key = menu.printMainMenu();
+    int key = 0;
+    do{
+         key = menu.printMainMenu();
+
     if (key == START_GAME)
     { 
         this->setLevel( menu.gameLevel());
@@ -14,6 +17,7 @@ void Game::gameFlow()
         clear_screen();
         Game::init(isColored,true);
         Game::run();
+
     }
     else if (key == INSTRUCTIONS)
     {
@@ -36,6 +40,7 @@ void Game::gameFlow()
         this->init(isColored, flag);
         this->run();
 
+
     }
     else if (key == EXIT)
     {
@@ -43,6 +48,8 @@ void Game::gameFlow()
         cout << "\nThank you and goodbye!\n";
         exit(-1);
     }
+
+    }while(key != QUIT);
     return;
 }
 
@@ -60,6 +67,7 @@ void Game::init(bool isColored,bool readFiles)
                 boardNames.push_back(file.path().string());
             }
         }
+        std::sort(boardNames.begin(), boardNames.end());
     }
     p.setArrowKeys("wxads");
     p.setFigure('@');
@@ -101,15 +109,23 @@ bool Game::doesPacMeetsFruit()
 void Game::run()
 {
     //pre run
+    stats.setPoint(0, board.getLengedPos());
     int counter = 0;
     bool killGameFlag = false;
     int PacmanDir;
     bool moveGhost = true;
     for (int i = 0; i < boardNames.size(); i++)
     {
+        int fruitRow=0, fruitCol=0;
+
         if (killGameFlag) {
             break;
         }
+        string fileName = "../pacman_";
+        fileName = fileName + std::to_string(i + 1);
+        fileName = fileName + ".steps";
+        ofstream MyFile(fileName);
+       
         bool flagwalk = true;
 
         char key = 0;
@@ -145,6 +161,7 @@ void Game::run()
             {
                 menu.gameOver();
                 p.setLives(3);
+                this->setScore(0);
                 flag = 1;
                 killGameFlag = true;
                 break;
@@ -153,31 +170,31 @@ void Game::run()
     if (flag) break;
     int scorePos = board.getScoreLegendPost();
     int lifePos = board.getLifeLegendPost();
-
+    int legendPos = board.getLengedPos();
             for (int i = 0; i < 6; i += 2)
             {
-                stats.setPoint(17 + i, 20);
+                stats.setPoint(17 + i, legendPos);
                 stats.draw('-');
-                stats.setPoint(18 + i, 20);
+                stats.setPoint(18 + i, legendPos);
 
                 stats.draw('-');
-                stats.setPoint(19 + i, 20);
+                stats.setPoint(19 + i, legendPos);
 
             }
 
             for (int i = 0; i < p.getLives() * 2; i += 2)
             {
-                stats.setPoint(17 + i, 20);
+                stats.setPoint(17 + i, legendPos);
                 stats.draw('<');
-                stats.setPoint(18 + i, 20);
+                stats.setPoint(18 + i, legendPos);
 
                 stats.draw('3');
-                stats.setPoint(19 + i, 20);
+                stats.setPoint(19 + i, legendPos);
 
             }
 
         
-        stats.setPoint(6, 20);
+        stats.setPoint(6, legendPos);
         if (_kbhit())
         {
             key = _getch();
@@ -207,17 +224,18 @@ void Game::run()
             if ((PacmanDir = p.getDirectionInput(key)) != -1)
             {
                 p.setDirection(PacmanDir);
-              
+                
             }
         }
 
         if (fruit.getWaitUntill() > 0) {
             fruit.setWaitUntill(fruit.getWaitUntill() - 1);
+          
         }
         if (fruit.getWaitUntill() == 0) {
             
             if (flagwalk) {
-                int fruitRow, fruitCol;
+                
                 do{
                  fruitRow = rand() % (limits[1] - limits[0] + 1) + limits[0] - 1;
                  fruitCol = rand() % (limits[3] - limits[2] + 1) + limits[2] - 1;
@@ -278,7 +296,7 @@ void Game::run()
         }
        
         
-        if (moveGhost && Ghost::getGhostAmount() >0)
+        if (moveGhost && Ghost::getGhostAmount() > 0)
         {
             int level = this->getLevel();
             if (level == BEST)
@@ -310,6 +328,8 @@ void Game::run()
 
                 if (canMove(ghosts[i].getDir(), ghosts[i].getPoint(), board, false)) {
                     char coorState = currCoorState(ghosts[i].getPoint(), board);
+                    MyFile << to_string(bestOption) + ',';
+
                     ghosts[i].move(coorState, limits);
                 }
                 else {
@@ -324,7 +344,25 @@ void Game::run()
                 }
 
             }
+            for (int j = 0; j < 4-Ghost::getGhostAmount(); j++)
+            {
+                MyFile << "99,";
+            }
         }
+        else {
+            MyFile << "99,99,99,99,";
+        }
+
+        if (fruit.getWaitUntill() > 0 || slowFruit % 3 != 0) {
+            MyFile << "99,99,99,";
+        }
+        else if (fruit.getWaitUntill() == 0 ) {
+            MyFile << to_string(fruitRow) + ",";
+            MyFile << to_string(fruitCol) + ",";
+            MyFile << to_string(fruit.getDir()) + ",";
+        }
+        MyFile << to_string(p.getDir()) + '\n';
+
         moveGhost = !moveGhost;// to make the pacman move x2 faster than the ghosts
         
         //checks if the pacman can move there (means its not a wall) and updates the score
@@ -357,7 +395,7 @@ void Game::run()
     setTextColor(Color::WHITE);
     clear_screen();
     }
-    Game::gameFlow();
+    //Game::gameFlow();
 
 }
 

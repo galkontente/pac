@@ -60,7 +60,7 @@ void Point::movePoint(int dir,int limit[]) {
 		}
 		break;
 	case 2: // LEFT
-		if (x == 0)
+		if (x < 0)
 			break;
 		--x;
 		if (x < leftLimit) {

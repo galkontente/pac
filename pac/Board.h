@@ -14,11 +14,12 @@ private:
 	int BoardLimits[4] = { 0,0,0,0 };
 	int scoreLenged = 0;
 	int lifeLenged = 0;
+	int legendRow = 19;
 	
 
 	enum type{WALL,PATH,PATH_BC};
 public:
-	void findBoardBorders(const char* filePath);
+	//void findBoardBorders(const char* filePath);
 	int getBoardLimit(int limitNum) {
 		return BoardLimits[limitNum];
 	}
@@ -36,6 +37,12 @@ public:
 	void setLenged(int life, int score) {
 		lifeLenged = life;
 		scoreLenged = score;
+	}
+	void setLengedPos(int newPos) {
+		legendRow = newPos;
+	}
+	int getLengedPos() {
+		return legendRow;
 	}
 	void setBreadCrumbCoor(int x, int y,int curr) {
 		layout[x][y]=curr;

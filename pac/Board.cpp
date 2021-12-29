@@ -18,10 +18,10 @@ void Board::Print(bool isColored, Ghost* ghosts, Point & pacman) {
 	
 	for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 81; j++) {
-			if (initBoard[i][j] == '&') {
+			/*if (initBoard[i][j] == '&') {
 				setLenged(i, i + 12);
-			}
-			else if (initBoard[i][j] == '$' && Ghost::getGhostAmount() <4)
+			}*/
+			 if (initBoard[i][j] == '$' && Ghost::getGhostAmount() <4)
 			{
 				int ghostA = Ghost::getGhostAmount();
 				ghosts[ghostA].setFigure('&');
@@ -72,13 +72,15 @@ void Board::Print(bool isColored, Ghost* ghosts, Point & pacman) {
 				std::cout << ' ';
 				continue;
 			}
+			else if (initBoard[i][j] == '&')
+			{
+				setLengedPos(i);
+
+			}
 		}
 		std::cout << endl;
 	}
-	for (int i = 0; i < 81; i++)
-	{
-		std::cout << initBoard[19][i];
-	}
+
 }
 
 bool Board::checkIfBoardCompleted() {
@@ -100,9 +102,19 @@ void Board:: initBoardFromFile(const string filePath) {
 		cout << "bad name" << filePath << endl;
 		exit(0);
 	}
+
+	for (int i = 0; i < 20; ++i) {
+		for (int j = 0; j < 81; ++j) {
+			initBoard[i][j]=' ';
+			
+		}
+	}
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < 81; ++j) {
 			char next = infile.get();
+			if (next == '\n') {
+				break;
+			}
 			tmpBoard[i][j] = next;
 			initBoard[i][j] = next;
 
@@ -137,59 +149,4 @@ void Board:: initBoardFromFile(const string filePath) {
 			break;
 		}
 	}
-}
-
-void Board:: findBoardBorders(const char* filePath) {
-	bool findBorderFlag = false;
-	char tmpBoard[20][81];
-	int topBorder = 0, bottomBorder = 0, leftBorder = 0, rightBorder = 0;
-	ifstream infile;
-	infile.open(filePath);
-
-
-	if (!infile) {
-		cout << "bad name" << filePath << endl;
-		exit(0);
-	}
-
-	for (int i = 0; i < 20; i++) {
-		for (int j = 0; j < 81; ++j) {
-			char next = infile.get();
-			tmpBoard[i][j] = next;
-			cout << next;
-		}
-
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		if (tmpBoard[i][20] == '#') {
-			BoardLimits[0] = i;
-			break;
-		}
-	}
-	for (int i = 19; i > 0; i--)
-	{
-		if (tmpBoard[i][20] == '#') {
-			BoardLimits[1] = i;
-			break;
-		}
-	}
-	for (int i = 0; i < 80; i++)
-	{
-		if (tmpBoard[topBorder][i] == '#') {
-			BoardLimits[2] = i;
-			break;
-		}
-	}
-	for (int i = 80; i > 0; i--)
-	{
-		if (tmpBoard[topBorder][i] == '#') {
-			BoardLimits[3] = i;
-			break;
-		}
-	}
-	cout << endl;
-	cout << "top" << topBorder << "bottom" << bottomBorder << "left" << leftBorder << "right" << rightBorder << endl;
-
 }

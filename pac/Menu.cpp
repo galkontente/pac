@@ -185,12 +185,14 @@ string Menu::askBoardFile(vector<string>  boardNames) {
     }
     cout << "enter the board file name please :)\n";
     cin >> fileName;
-   
+    fileName = "../" + fileName;
+
     while(this->exists(boardNames, boardNames.size(),fileName)==false)
     {
         cout << "try again\n";
 
         cin >> fileName;
+        fileName = "../" + fileName;
     }
     return  fileName;
     
