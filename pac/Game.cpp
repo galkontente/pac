@@ -612,7 +612,7 @@ void Game::loadMode(string fileName)
             }
             loadFile(fileName);
         }
-
+        
 
         if (fruit.getPointByRef().getX() != 99 && fruit.getPointByRef().getY() != 99)
         {

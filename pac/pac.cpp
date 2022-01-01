@@ -8,6 +8,7 @@ int main() {
 	Game game;
 	game.loadMode("../pacman_1.steps");
 	//game.gameFlow();
+	// \\\
 //	game.readMovesFromFile("../pacman_1.steps");
 	return 0;
 }
