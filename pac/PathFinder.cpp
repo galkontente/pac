@@ -246,9 +246,9 @@ void PathFinder::bfs(Point target, Ghost* ghosts, Board board) {
 
 
 				trailMap[cur_y + dy[i]][cur_x + dx[i]] = cur_distance + 1;
-				/*   target.setPoint(cur_x, cur_y);
+				  target.setPoint(cur_x, cur_y);
 					if (board.getBoardCoor(cur_y, cur_x) != '&' && board.getBoardCoor(cur_y, cur_x) != '@')
-						target.drawInt(trailMap[cur_y ][cur_x ]>9? 9: trailMap[cur_y][cur_x]);*/
+						target.drawInt(trailMap[cur_y ][cur_x ]>9? 9: trailMap[cur_y][cur_x]);
 			}
 		}
 	}

@@ -45,7 +45,7 @@ void Game::gameFlow()
     else if (key == EXIT)
     {
         clear_screen();
-        cout << "\nThank you and goodbye!\n";
+        std::cout << "\nThank you and goodbye!\n";
         exit(-1);
     }
 
@@ -111,20 +111,24 @@ void Game::run()
     //pre run
     stats.setPoint(0, board.getLengedPos());
     int counter = 0;
+
     bool killGameFlag = false;
     int PacmanDir;
     bool moveGhost = true;
     for (int i = 0; i < boardNames.size(); i++)
     {
+        int bestOption = 0;
         int fruitRow=0, fruitCol=0;
 
         if (killGameFlag) {
             break;
         }
-        string fileName = "../pacman_";
+        stepFileManager.setBoard_stepFileName(i,".steps");
+        resultsFileManager.setBoard_stepFileName(i, ".results");
+      /*  string fileName = "../pacman_";
         fileName = fileName + std::to_string(i + 1);
         fileName = fileName + ".steps";
-        ofstream MyFile(fileName);
+        ofstream MyFile(fileName);*/
        
         bool flagwalk = true;
 
@@ -139,7 +143,7 @@ void Game::run()
         //while run
         p.move(limits);
     
-   
+        int frameCount =0;
 
     do {
 
@@ -164,6 +168,9 @@ void Game::run()
                 this->setScore(0);
                 flag = 1;
                 killGameFlag = true;
+                resultsFileManager.commit("L-" + to_string(frameCount)+"\n");
+                resultsFileManager.write();
+
                 break;
             }
         }
@@ -201,8 +208,8 @@ void Game::run()
             if (key == ESC) {
                 gotoxy(0, 21);
                 setTextColor(Color::WHITE);
-                cout<<  "***** Game paused, press ESC/q to continue/quit. *****\n";
-                cout << endl;
+                std::cout<<  "***** Game paused, press ESC/q to continue/quit. *****\n";
+                std::cout << endl;
                 char escape = 'n';
                 while (escape != ESC && escape != QUIT) {
                     escape = _getch();
@@ -212,13 +219,14 @@ void Game::run()
                     p.getPointByRef().setPoint(1, 1);
                     flag = 1;
                     killGameFlag = true;
-  
+                    stepFileManager.write();
+
                    
                     break;
                 }
                 gotoxy(0, 21);
-                cout << "                                                           \n";
-                cout << endl;
+                std::cout << "                                                           \n";
+                std::cout << endl;
                 
             }
             if ((PacmanDir = p.getDirectionInput(key)) != -1)
@@ -304,7 +312,6 @@ void Game::run()
 
             for (int i = 0; i < Ghost::getGhostAmount(); i++)
             {
-                int bestOption;
                 //sets direction and checks if the ghost can move there (means its not a wall or a tunnel)
                 if (level == BEST) {
                     bestOption = ghostLogic.findBestDir(ghosts[i].getPoint(), board);
@@ -314,7 +321,7 @@ void Game::run()
                     if (15 < counter && counter < 20)
                     {
                         int stam = ghostLogic.goodGhosts(p.getPoint(), ghosts, i, counter);
-                        int bestOption = ghosts[i].getDir();
+                         bestOption = ghosts[i].getDir();
                     }
                     else
                         bestOption = ghostLogic.goodGhosts(p.getPoint(), ghosts, i, counter);
@@ -328,7 +335,7 @@ void Game::run()
 
                 if (canMove(ghosts[i].getDir(), ghosts[i].getPoint(), board, false)) {
                     char coorState = currCoorState(ghosts[i].getPoint(), board);
-                    MyFile << to_string(bestOption) + ',';
+                    stepFileManager.commit(to_string(bestOption) + ',');
 
                     ghosts[i].move(coorState, limits);
                 }
@@ -346,22 +353,23 @@ void Game::run()
             }
             for (int j = 0; j < 4-Ghost::getGhostAmount(); j++)
             {
-                MyFile << "99,";
+                stepFileManager.commit("99,");
             }
         }
         else {
-            MyFile << "99,99,99,99,";
+            stepFileManager.commit("99,99,99,99,");
         }
 
         if (fruit.getWaitUntill() > 0 || slowFruit % 3 != 0) {
-            MyFile << "99,99,99,";
+            stepFileManager.commit("99,99,99,");
         }
         else if (fruit.getWaitUntill() == 0 ) {
-            MyFile << to_string(fruitRow) + ",";
-            MyFile << to_string(fruitCol) + ",";
-            MyFile << to_string(fruit.getDir()) + ",";
+            stepFileManager.commit(to_string(fruitRow) + ",");
+            stepFileManager.commit(to_string(fruitCol) + ",");
+            stepFileManager.commit(to_string(fruit.getDir()) + ",");
         }
-        MyFile << to_string(p.getDir()) + '\n';
+        stepFileManager.commit(to_string(p.getDir()));
+        stepFileManager.write();
 
         moveGhost = !moveGhost;// to make the pacman move x2 faster than the ghosts
         
@@ -378,15 +386,19 @@ void Game::run()
             p.move(limits);
             if (board.checkIfBoardCompleted())
             {
+                resultsFileManager.commit("W-" + to_string(frameCount) + "\n");
+                resultsFileManager.write();
+                stepFileManager.write();
                 menu.youWon();
                 clear_screen();
                 flag = 1;
                 this->setScore(0);
+             
 
                 continue;
             }
         }
-
+        frameCount++;
         Sleep(100);
     } while (flag!=1);
     //post run

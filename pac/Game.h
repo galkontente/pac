@@ -10,7 +10,7 @@
 
 #include"Menu.h"
 #include"Ghost.h"
-
+#include"FileManager.h"
 
 
 class Game {
@@ -23,6 +23,9 @@ class Game {
 	Board board;
 	bool isColored = false;
 	Ghost ghosts[4];
+	FileManager stepFileManager;
+	FileManager resultsFileManager;
+
 	vector<string> boardNames;
 	PathFinder ghostLogic;
 	Pac p;
