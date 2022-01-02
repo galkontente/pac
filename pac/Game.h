@@ -53,7 +53,7 @@ public:
 	bool doesGhostMeetsFruit(int i);
 	bool doesPacMeetsFruit();
 	void loadFile(std::ifstream file);
-	void loadMode(string fileName);
+	void loadMode(string fileName, bool silent);
 	/*void readMovesFromFile(string fileName);*/
 
 };

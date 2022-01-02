@@ -463,7 +463,7 @@ void Game::loadFile(std::ifstream file)
 
 }
 
-void Game::loadMode(string fileName)
+void Game::loadMode(string fileName, bool silent)
 {
     //pre run
     stats.setPoint(0, board.getLengedPos());
@@ -681,7 +681,8 @@ void Game::loadMode(string fileName)
                 }
             }
 
-            Sleep(200);
+            if (silent == false)
+                Sleep(200);
         } while (flag != 1  && !file.eof());
         //post run
         flag = 0;
