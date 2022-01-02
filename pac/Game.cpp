@@ -141,7 +141,7 @@ void Game::run()
         int slowFruit = 0;
 
         //while run
-        p.move(limits);
+        //p.move(limits);
     
    
 
@@ -350,22 +350,21 @@ void Game::run()
             }
             for (int j = 0; j < 4-Ghost::getGhostAmount(); j++)
             {
-                MyFile << "x,";
+                MyFile << "99,";
             }
         }
         else {
-            MyFile << "x,x,x,x,";
+            MyFile << "99,99,99,99,";
         }
 
         if (fruit.getWaitUntill() > 0 || slowFruit % 3 != 0) {
-            MyFile << "x,x,x,";
+            MyFile << "99,99,99,";
         }
         else if (fruit.getWaitUntill() == 0 ) {
-            MyFile << to_string(fruitRow) + ",";
             MyFile << to_string(fruitCol) + ",";
+            MyFile << to_string(fruitRow) + ",";
             MyFile << to_string(fruit.getDir()) + ",";
         }
-        MyFile << to_string(p.getDir()) + '\n';
 
         moveGhost = !moveGhost;// to make the pacman move x2 faster than the ghosts
         
@@ -390,6 +389,8 @@ void Game::run()
                 continue;
             }
         }
+
+        MyFile << to_string(p.getDir()) + ',' + '\n';
 
         Sleep(100);
     } while (flag!=1);
@@ -456,54 +457,9 @@ void Game::setScore(int newScore) {
     score = newScore;
 }
 
-void Game::loadFile(string fileName)
+void Game::loadFile(std::ifstream file)
 {
-    stringstream ss;
-    std::ifstream file(fileName);
-    string str;
-    string token = "";
-    string arr[8];
-    int res[8];
-    int j = 0, len = 0, num;
-
-    string delimiter = ",";
-
-    std::getline(file, str);
-    //cout << str << '\n';
-
-    while (token.length() <= str.length())
-    {
-        token = str.substr(0, str.find(delimiter));
-        len = token.length() + 1;
-        arr[j] = token;
-        j++;
-        str = str.substr(len, str.length());
-        cout << str << '\n';
-    }
-
-    for (int i = 0; i < 8; i++)
-    {
-        ss << arr[i];
-        ss >> num;
-        res[i] = num;
-    }
-
-
-    for (int i = 0; i < 4; i++)
-    {
-        if (res[i] != 99)
-        {
-                ghosts[i].setDirection(res[i]);
-
-        }
-            
-    }
-
-        fruit.getPointByRef().setPoint(res[4], res[5]);
-        if (res[6] != 99)
-            fruit.setDirection(res[6]);
-       
-    p.setDirection(res[7]);
+   
 
 }
 
@@ -517,6 +473,7 @@ void Game::loadMode(string fileName)
     bool moveGhost = true;
     int fruitRow = 0, fruitCol = 0;
     bool flagwalk = true;
+    std::ifstream file("../pacman_1.steps");
 
     char key = 0;
     int flag = 0;
@@ -527,13 +484,82 @@ void Game::loadMode(string fileName)
     int slowFruit = 0;
 
     //while run
-    p.move(limits);
-
+    //p.move(limits);
+    int stepcount = 0;
 
     do {
+        stepcount++;
+        stringstream ss;
+        string str;
+        string token = "";
+        string arr[8];
+        int res[8];
+        int j = 0, len = 0, num;
+
+        string delimiter = ",";
+
+        std::getline(file, str);
+        //cout << str << '\n';
+        size_t pos = 0;
+
+        while ((pos = str.find(delimiter)) != std::string::npos) {
+            token = str.substr(0, pos);
+            arr[j] = token;
+             j++;
+            str.erase(0, pos + delimiter.length());
+        }
+       /* while (token.length() < str.length())
+        {
+            token = str.substr(0, str.find(delimiter));
+            len = token.length() + 1;
+            arr[j] = token;
+            j++;
+            str = str.substr(len, str.length());
+        }*/
+
+        for (int i = 7; i >= 0; i--)
+        {
+            int x;
+            sscanf_s(arr[i].c_str(), "%d", &x);
+            res[i] = x;
+        }
 
         for (int i = 0; i < Ghost::getGhostAmount(); i++)
         {
+            if (res[i] != 99)
+            {
+                ghosts[i].setDirection(res[i]);
+                //cout << res[i] << ' ';
+
+            }
+
+        }
+        if (res[4] != 99 && res[5]!=99) {
+            //cout <<'(' << res[4] << ',' << res[5] << ')' << ' ';
+            fruit.getPointByRef().setPoint(res[4], res[5]);
+
+        }
+
+
+        if (res[6] != 99) {
+            //cout << res[6] << ' ';
+
+            fruit.setDirection(res[6]);
+
+        }
+        if (res[7] != 99) {
+            p.setDirection(res[7]);
+
+        }
+        //cout << '\n';
+
+    
+
+
+
+        for (int i = 0; i < Ghost::getGhostAmount(); i++)
+        {
+            if (res[i] == 99) continue;
             int currLives = p.getLives();
             if (
                 p.getPoint().getX() == ghosts[i].getPoint().getX() &&
@@ -584,51 +610,22 @@ void Game::loadMode(string fileName)
 
 
         stats.setPoint(6, legendPos);
-        if (_kbhit())
-        {
-            key = _getch();
-            if (key == ESC) {
-                gotoxy(0, 21);
-                setTextColor(Color::WHITE);
-                cout << "***** Game paused, press ESC/q to continue/quit. *****\n";
-                cout << endl;
-                char escape = 'n';
-                while (escape != ESC && escape != QUIT) {
-                    escape = _getch();
-                }
-                if (escape == QUIT) {
-                    p.setLives(3);
-                    p.getPointByRef().setPoint(1, 1);
-                    flag = 1;
-                    killGameFlag = true;
-
-
-                    break;
-                }
-                gotoxy(0, 21);
-                cout << "                                                           \n";
-                cout << endl;
-
-            }
-            loadFile(fileName);
-        }
-        
 
         if (fruit.getPointByRef().getX() != 99 && fruit.getPointByRef().getY() != 99)
         {
-            fruit.getPointByRef().setPoint(fruit.getPointByRef().getY(), fruit.getPointByRef().getX());
+            fruit.setFigure('v');
             fruit.getPointByRef().draw(fruit.getFigure());
 
 
         }
+        else {
+            char prevCoorState = currCoorState(fruit.getPoint(), board);
+            fruit.getPointByRef().draw(prevCoorState);
+        }
         if (canMove(fruit.getDir(), fruit.getPoint(), board, false)) {
 
-            char coorState = currCoorState(fruit.getPoint(), board);
+            char coorState = currCoorState(fruit.getPointByRef(), board);
             fruit.move(coorState, limits);
-        }
-        else {
-
-            fruit.setDirection(4);
         }
 
         if (this->doesPacMeetsFruit())
@@ -636,17 +633,13 @@ void Game::loadMode(string fileName)
             int fig = fruit.getFigure() - '0';
             setScore((int)fig + score);
             stats.drawInt(score);
-            fruit.setLifeDur(-1);
-            flagwalk = true;
 
-            fruit.setWaitUntill((rand() % 50 + 5));
 
         }
         else {
-            fruit.setWaitUntill((rand() % 50 + 5));
             char prevCoorState = currCoorState(fruit.getPoint(), board);
             fruit.getPointByRef().draw(prevCoorState);
-            flagwalk = true;
+    
         }
 
 
@@ -661,18 +654,11 @@ void Game::loadMode(string fileName)
                     char coorState = currCoorState(ghosts[i].getPoint(), board);
                     ghosts[i].move(coorState, limits);
                 }
-                else {
-                    while (!canMove(ghosts[i].getDir(), ghosts[i].getPoint(), board, false))
-                    {
-
-                        ghosts[i].setDirection(4);
-                    }
-                    char coorState = currCoorState(ghosts[i].getPoint(), board);
-                    ghosts[i].move(coorState, limits);
-                }
+        
 
             }
 
+        }
             //checks if the pacman can move there (means its not a wall) and updates the score
             if (canMove(p.getDir(), p.getPoint(), board, true)) {
                 int x = p.getPoint().getX();
@@ -695,14 +681,15 @@ void Game::loadMode(string fileName)
                 }
             }
 
-            Sleep(100);
-        } while (flag != 1);
+            Sleep(200);
+        } while (flag != 1  && !file.eof());
         //post run
         flag = 0;
         Ghost::resetGhostAmount();
         setTextColor(Color::WHITE);
         clear_screen();
     }
+
 
 
 

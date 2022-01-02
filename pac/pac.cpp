@@ -6,6 +6,8 @@ using namespace std;
 
 int main() {
 	Game game;
+	game.init(false, true);
+
 	game.loadMode("../pacman_1.steps");
 	//game.gameFlow();
 	// \\\

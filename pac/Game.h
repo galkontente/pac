@@ -52,7 +52,7 @@ public:
 	void setScore(int newScore);
 	bool doesGhostMeetsFruit(int i);
 	bool doesPacMeetsFruit();
-	void loadFile(string fileName);
+	void loadFile(std::ifstream file);
 	void loadMode(string fileName);
 	/*void readMovesFromFile(string fileName);*/
 
